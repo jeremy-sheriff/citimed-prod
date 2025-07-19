@@ -35,7 +35,6 @@
                 <flux:navlist.group expandable  heading="Pharmacy" class="hidden lg:grid">
                     <flux:navlist.item icon="circle-dollar-sign" href="#">Medicines</flux:navlist.item>
                     <flux:navlist.item icon="hand-coins" href="#">Balances</flux:navlist.item>
-                    <flux:navlist.item href="#">Brand guidelines</flux:navlist.item>
                 </flux:navlist.group>
 
         </flux:navlist.group>
