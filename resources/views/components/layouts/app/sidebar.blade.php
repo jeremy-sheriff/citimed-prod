@@ -17,25 +17,25 @@
             <flux:navlist.item icon="home" href="/dashboard" wire:navigate>Home</flux:navlist.item>
             @role('super-admin')
             <flux:navlist.item icon="users" href="/patients" wire:navigate >Patients</flux:navlist.item>
-            <flux:navlist.item icon="calendar" href="#" wire:navigate >Visits</flux:navlist.item>
+            <flux:navlist.item icon="calendar" href="#" wire:navigate >Visits!</flux:navlist.item>
             @else
 
             @endrole
 
-                <flux:navlist.group expandable heading="Finance" class="hidden lg:grid">
-                    <flux:navlist.item icon="circle-dollar-sign" href="#">Payments</flux:navlist.item>
-                    <flux:navlist.item icon="hand-coins" href="#">Balances</flux:navlist.item>
-                    <flux:navlist.item icon="receipt" href="#">Invoices</flux:navlist.item>
-                    <flux:navlist.item icon="file-check" href="#">Insurance Claims</flux:navlist.item>
-                    <flux:navlist.item icon="banknote" href="#">Payroll</flux:navlist.item>
-                </flux:navlist.group>
+            <flux:navlist.group expandable heading="Finance" class="hidden lg:grid">
+                <flux:navlist.item icon="circle-dollar-sign" href="#">Payments</flux:navlist.item>
+                <flux:navlist.item icon="hand-coins" href="#">Balances</flux:navlist.item>
+                <flux:navlist.item icon="receipt" href="#">Invoices</flux:navlist.item>
+                <flux:navlist.item icon="file-check" href="#">Insurance Claims</flux:navlist.item>
+                <flux:navlist.item icon="banknote" href="#">Payroll</flux:navlist.item>
+            </flux:navlist.group>
 
 
 
-                <flux:navlist.group expandable  heading="Pharmacy" class="hidden lg:grid">
-                    <flux:navlist.item icon="circle-dollar-sign" href="#">Medicines</flux:navlist.item>
-                    <flux:navlist.item icon="hand-coins" href="#">Balances</flux:navlist.item>
-                </flux:navlist.group>
+            <flux:navlist.group expandable  heading="Pharmacy" class="hidden lg:grid">
+                <flux:navlist.item icon="circle-dollar-sign" href="#">Medicines</flux:navlist.item>
+                <flux:navlist.item icon="hand-coins" href="#">Balances</flux:navlist.item>
+            </flux:navlist.group>
 
         </flux:navlist.group>
 
