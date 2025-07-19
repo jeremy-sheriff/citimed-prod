@@ -33,6 +33,9 @@
                 <flux:navlist.item icon="hand-coins" href="#">Balances</flux:navlist.item>
             </flux:navlist.group>
 
+
+            <flux:navlist.item icon="calendar" href="#" wire:navigate >Bottom!</flux:navlist.item>
+
         </flux:navlist.group>
 
         </flux:navlist>
