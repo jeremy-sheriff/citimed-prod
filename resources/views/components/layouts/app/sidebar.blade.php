@@ -13,7 +13,16 @@
 
             <flux:navlist variant="outline">
                 <flux:navlist.group :heading="__('Platform')" class="grid">
-                    <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Dashboard') }}</flux:navlist.item>
+                    <a href="/dashboard" wire:navigate class="flex items-center gap-2 text-gray-700 hover:text-primary transition">
+                        <flux:icon name="home" class="w-4 h-4" />
+                        Dashboard
+                    </a>
+                    <br>
+                    <a href="/patients" wire:navigate class="flex items-center gap-2 text-gray-700 hover:text-primary transition">
+                        <flux:icon name="users" class="w-4 h-4" />
+                        Patients
+                    </a>
+
                 </flux:navlist.group>
             </flux:navlist>
 
