@@ -15,12 +15,8 @@
     <flux:navlist variant="outline">
         <flux:navlist.group :heading="__('Platform')" class="grid">
             <flux:navlist.item icon="home" href="/dashboard" wire:navigate>Home</flux:navlist.item>
-            @role('super-admin')
             <flux:navlist.item icon="users" href="/patients" wire:navigate >Patients</flux:navlist.item>
             <flux:navlist.item icon="calendar" href="#" wire:navigate >Visits!</flux:navlist.item>
-            @else
-
-            @endrole
 
             <flux:navlist.group expandable heading="Finance" class="hidden lg:grid">
                 <flux:navlist.item icon="circle-dollar-sign" href="#">Payments</flux:navlist.item>

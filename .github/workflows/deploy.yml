@@ -1,4 +1,4 @@
-name: Deploy Shoe App to Prod
+name: Deploy citimed App to Prod
 
 on:
   push:
