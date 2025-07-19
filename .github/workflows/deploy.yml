@@ -17,6 +17,7 @@ jobs:
         run: |
           zip -r app.zip . -x \
             "vendor/**" \
+            "public/**" \
             "node_modules/**" \
             ".git/**" \
             ".github/**" \
