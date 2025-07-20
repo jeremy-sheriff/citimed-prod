@@ -18,7 +18,7 @@
             <flux:navlist.item icon="users" href="/patients" wire:navigate >Patients</flux:navlist.item>
             <flux:navlist.item icon="calendar" href="#" wire:navigate >Visits!</flux:navlist.item>
 
-            <flux:navlist.group expandable heading="Finance" class="hidden lg:grid">
+            <flux:navlist.group expandable heading="Finance" class="lg:grid">
                 <flux:navlist.item icon="circle-dollar-sign" href="#">Payments</flux:navlist.item>
                 <flux:navlist.item icon="hand-coins" href="#">Balances</flux:navlist.item>
                 <flux:navlist.item icon="receipt" href="#">Invoices</flux:navlist.item>
@@ -28,7 +28,7 @@
 
 
 
-            <flux:navlist.group expandable  heading="Pharmacy" class="hidden lg:grid">
+            <flux:navlist.group expandable  heading="Pharmacy" class="lg:grid">
                 <flux:navlist.item icon="circle-dollar-sign" href="#">Medicines</flux:navlist.item>
                 <flux:navlist.item icon="hand-coins" href="#">Balances</flux:navlist.item>
             </flux:navlist.group>
