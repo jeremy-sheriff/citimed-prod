@@ -12,6 +12,7 @@ class RolePermissionSeeder extends Seeder
     public function run(): void
     {
         // Define roles and their permissions
+
         $roles = [
             'super-admin' => [
                 'manage users',
@@ -83,8 +84,8 @@ class RolePermissionSeeder extends Seeder
             }
         }
 
-        // Optionally assign a super-admin role to first user
-        $user = User::find(1);
+        // Optionally assign a super-admin role to the first user
+        $user = User::query()->find(1);
         if ($user) {
             $user->assignRole('super-admin');
         }
