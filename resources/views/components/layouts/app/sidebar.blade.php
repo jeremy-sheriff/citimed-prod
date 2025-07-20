@@ -30,11 +30,9 @@
 
             <flux:navlist.group expandable  heading="Pharmacy" class="lg:grid">
                 <flux:navlist.item icon="circle-dollar-sign" href="#">Medicines</flux:navlist.item>
+                <flux:menu.separator/>
                 <flux:navlist.item icon="hand-coins" href="#">Balances</flux:navlist.item>
             </flux:navlist.group>
-
-
-            <flux:navlist.item icon="calendar" href="#" wire:navigate >Bottom!</flux:navlist.item>
 
         </flux:navlist.group>
 
@@ -76,6 +74,19 @@
                 <flux:menu.radio.group>
                     <flux:menu.item :href="route('settings.profile')" icon="cog"
                                     wire:navigate>{{ __('Settings') }}</flux:menu.item>
+                </flux:menu.radio.group>
+
+                <flux:menu.separator/>
+                <flux:menu.radio.group>
+                    <flux:menu.item :href="route('settings.profile')" icon="cloud-check"
+                                    wire:navigate>{{ __('Roles') }}</flux:menu.item>
+                </flux:menu.radio.group>
+
+                <flux:menu.separator/>
+
+                <flux:menu.radio.group>
+                    <flux:menu.item :href="route('settings.profile')" icon="shield-user"
+                                    wire:navigate>{{ __('Permissions') }}</flux:menu.item>
                 </flux:menu.radio.group>
 
                 <flux:menu.separator/>
