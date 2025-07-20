@@ -38,5 +38,4 @@ jobs:
             **/.github/**
             **/tests/**
             **/*.md
-            **/database/**
             **/.env
