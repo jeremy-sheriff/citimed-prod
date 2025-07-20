@@ -31,7 +31,6 @@ jobs:
           port: 21
           server-dir: /domains/citimedhospital.co.ke/
           exclude: |
-            **/public/**
             **/vendor/**
             **/node_modules/**
             **/.git/**
