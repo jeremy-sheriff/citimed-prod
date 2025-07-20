@@ -1,32 +1,27 @@
 name: Deploy citimed App to Prod
-
 on:
   push:
     branches: [main]
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
     environment: prod
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Zip project contents (excluding unnecessary files)
-        run: |
-          zip -r app.zip . -x \
-            "vendor/**" \
-            "public/**" \
-            "node_modules/**" \
-            ".git/**" \
-            ".github/**" \
-            "tests/**" \
-            "*.md" \
-            "database/**" \
-            ".env"
+      - name: Deploy public folder contents to public_html
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{secrets.FTP_HOST}}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftp
+          port: 21
+          local-dir: ./public/
+          server-dir: /domains/citimedhospital.co.ke/public_html/
 
-      - name: Upload zipped contents via FTP
+      - name: Deploy other app files (excluding public)
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{secrets.FTP_HOST}}
@@ -35,3 +30,13 @@ jobs:
           protocol: ftp
           port: 21
           server-dir: /domains/citimedhospital.co.ke/
+          exclude: |
+            **/public/**
+            **/vendor/**
+            **/node_modules/**
+            **/.git/**
+            **/.github/**
+            **/tests/**
+            **/*.md
+            **/database/**
+            **/.env
