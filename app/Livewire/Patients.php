@@ -15,10 +15,6 @@ class Patients extends Component
     {
         $this->user = Auth::user();
 
-        if (!$this->user || !$this->user->can('view payments')) {
-            abort(403, 'Unauthorized');
-        }
-
         $this->roles = $this->user->getRoleNames();
         $this->permissions = $this->user->getAllPermissions()->pluck('name');
     }

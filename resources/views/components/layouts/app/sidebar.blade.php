@@ -18,20 +18,22 @@
             <flux:navlist.item icon="users" href="/patients" wire:navigate >Patients</flux:navlist.item>
             <flux:navlist.item icon="calendar" href="#" wire:navigate >Visits!</flux:navlist.item>
 
+            @role('super-admin')
             <flux:navlist.group expandable heading="Finance" class="lg:grid">
+
                 <flux:navlist.item icon="circle-dollar-sign" href="#">Payments</flux:navlist.item>
                 <flux:navlist.item icon="hand-coins" href="#">Balances</flux:navlist.item>
-                <flux:navlist.item icon="receipt" href="#">Invoices</flux:navlist.item>
-                <flux:navlist.item icon="file-check" href="#">Insurance Claims</flux:navlist.item>
-                <flux:navlist.item icon="banknote" href="#">Payroll</flux:navlist.item>
+
             </flux:navlist.group>
+            @else
+
+            @endrole
+
 
 
 
             <flux:navlist.group expandable  heading="Pharmacy" class="lg:grid">
                 <flux:navlist.item icon="circle-dollar-sign" href="#">Medicines</flux:navlist.item>
-                <flux:menu.separator/>
-                <flux:navlist.item icon="hand-coins" href="#">Balances</flux:navlist.item>
             </flux:navlist.group>
 
         </flux:navlist.group>
@@ -77,6 +79,15 @@
                 </flux:menu.radio.group>
 
                 <flux:menu.separator/>
+
+
+                @role('super-admin')
+                <flux:menu.radio.group>
+                    <flux:menu.item :href="route('users')" icon="users"
+                                    wire:navigate>{{ __('Users') }}</flux:menu.item>
+                </flux:menu.radio.group>
+                <flux:menu.separator/>
+
                 <flux:menu.radio.group>
                     <flux:menu.item :href="route('roles')" icon="cloud-check"
                                     wire:navigate>{{ __('Roles') }}</flux:menu.item>
@@ -88,6 +99,9 @@
                     <flux:menu.item :href="route('settings.profile')" icon="shield-user"
                                     wire:navigate>{{ __('Permissions') }}</flux:menu.item>
                 </flux:menu.radio.group>
+                @else
+
+                @endrole
 
                 <flux:menu.separator/>
 

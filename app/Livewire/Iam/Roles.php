@@ -18,7 +18,8 @@ class Roles extends Component
     {
         $this->user = Auth::user();
 
-//        dd();
+//        dd($this->user);
+
         $roles = Role::all()->toArray();
 
         foreach ($roles as $role) {

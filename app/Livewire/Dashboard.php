@@ -15,9 +15,9 @@ class Dashboard extends Component
     {
         $this->user = Auth::user();
 
-        if (!$this->user || !$this->user->can('view payments')) {
-            abort(403, 'Unauthorized');
-        }
+//        if (!$this->user || !$this->user->can('view payments')) {
+//            abort(403, 'Unauthorized');
+//        }
 
         $this->roles = $this->user->getRoleNames()->toArray();
 
