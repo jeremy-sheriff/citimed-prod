@@ -18,9 +18,7 @@ class Users extends Component
 
     public function mount()
     {
-        if (!$this->user || !$this->user->can('view payments')) {
-            abort(403, 'Unauthorized');
-        }
+
         $this->roles = Role::pluck('name')->toArray(); // Fetch available roles
     }
 
