@@ -22,7 +22,6 @@ jobs:
             ".github/**" \
             "tests/**" \
             "*.md" \
-            "database/**" \
             ".env"
 
       - name: Upload zipped contents via FTP
