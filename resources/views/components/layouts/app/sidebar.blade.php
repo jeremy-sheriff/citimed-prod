@@ -81,7 +81,7 @@
                 <flux:menu.separator/>
 
 
-                @role('super-admin')
+                @role('super-admin-role')
                 <flux:menu.radio.group>
                     <flux:menu.item :href="route('users')" icon="users"
                                     wire:navigate>{{ __('Users') }}</flux:menu.item>

@@ -4,28 +4,24 @@ namespace App\Livewire\Iam;
 
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
+use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 class Roles extends Component
 {
-    public array $roles = [];
-
+    public \Illuminate\Database\Eloquent\Collection $roles;
     public $user;
-
     public array $permissions = [];
 
     public function mount(): void
     {
         $this->user = Auth::user();
 
-//        dd($this->user);
+        // Get all roles with their associated permissions, keeping them as Eloquent objects
+        $this->roles = Role::with('permissions')->get();
 
-        $roles = Role::all()->toArray();
-
-        foreach ($roles as $role) {
-            $this->roles[] = $role['name'];
-        }
-
+        // Optional: You can prepare permissions list if needed
+        // $this->permissions = Permission::all();
     }
 
     public function render()

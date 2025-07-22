@@ -15,11 +15,19 @@ class Users extends Component
     public $password = '';
     public $role = '';
     public $roles = [];
+    public $user = '';
+    public $users = '';
 
     public function mount()
     {
+        $this->user = auth()->user();
+
+        if(!$this->user->hasRole('super-admin-role')){
+            abort(403, 'Unauthorized');
+        }
 
         $this->roles = Role::pluck('name')->toArray(); // Fetch available roles
+        $this->users = User::all();
     }
 
     public function registerUser()

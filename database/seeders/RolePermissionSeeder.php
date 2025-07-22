@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use App\Models\User;
@@ -14,14 +15,14 @@ class RolePermissionSeeder extends Seeder
         // Define roles and their permissions
 
         $roles = [
-            'super-admin' => [
+            'super-admin-role' => [
                 'manage users',
                 'manage roles',
                 'manage permissions',
                 'view system logs',
                 'manage settings',
             ],
-            'doctor' => [
+            'doctor-role' => [
                 'view assigned patients',
                 'update diagnoses',
                 'prescribe medication',
@@ -29,38 +30,38 @@ class RolePermissionSeeder extends Seeder
                 'view lab results',
                 'schedule appointments',
             ],
-            'nurse' => [
+            'nurse-role' => [
                 'view assigned patients',
                 'update vitals',
                 'assist in procedures',
                 'administer medication',
                 'view lab results',
             ],
-            'lab-technician' => [
+            'lab-role' => [
                 'view lab orders',
                 'update test results',
                 'print reports',
                 'view patient basic info',
             ],
-            'pharmacist' => [
+            'pharmacy-role' => [
                 'view prescriptions',
                 'update dispensation records',
                 'manage medicine inventory',
                 'generate stock reports',
             ],
-            'receptionist' => [
+            'reception-role' => [
                 'create patient profiles',
                 'schedule appointments',
                 'check-in patients',
                 'view doctors availability',
             ],
-            'billing-officer' => [
+            'finance-role' => [
                 'view invoices',
                 'update payments',
                 'process insurance claims',
                 'generate finance reports',
             ],
-            'inventory-manager' => [
+            'inventory-role' => [
                 'view stock levels',
                 'reorder supplies',
                 'manage suppliers',
@@ -74,6 +75,15 @@ class RolePermissionSeeder extends Seeder
             ],
         ];
 
+        // Temporarily disable foreign key checks
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+
+// Truncate the tables
+        Role::query()->truncate();
+        Permission::query()->truncate();
+
+// Re-enable foreign key checks
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
         // Create roles and assign permissions
         foreach ($roles as $roleName => $permissions) {
             $role = Role::query()->firstOrCreate(['name' => $roleName]);
@@ -87,7 +97,7 @@ class RolePermissionSeeder extends Seeder
         // Optionally assign a super-admin role to the first user
         $user = User::query()->find(1);
         if ($user) {
-            $user->assignRole('super-admin');
+            $user->assignRole('super-admin-role');
         }
     }
 }
