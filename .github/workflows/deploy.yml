@@ -34,4 +34,4 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftp
           port: 21
-          server-dir: /domains/citimedhospital.co.ke.co.ke/
+          server-dir: /domains/citimedhospital.co.ke/
