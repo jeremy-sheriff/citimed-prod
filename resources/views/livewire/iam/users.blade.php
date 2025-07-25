@@ -56,7 +56,7 @@
 
                     <!-- Submit Button -->
                     <div class="flex justify-end">
-                        <flux:button variant="primary" type="submit" color="primary">Register User</flux:button>
+                        <flux:button variant="primary" type="submit" icon="user-plus" color="primary">Register User</flux:button>
                     </div>
                 </form>
 
