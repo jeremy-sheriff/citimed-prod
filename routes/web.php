@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\DashboardController;
 use App\Livewire\Dashboard;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
@@ -16,7 +15,7 @@ Route::get('/', function () {
 //    ->name('dashboard');
 
 Route::get('/dashboard', Dashboard::class)->name('dashboard');
-Route::get('/patients', \App\Livewire\Patients::class);
+Route::get('/patients', \App\Livewire\Patients\Patients::class);
 
 Route::middleware(['auth'])->group(function () {
     Route::redirect('settings', 'settings/profile');

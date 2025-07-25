@@ -8,11 +8,20 @@ export default defineConfig({
     plugins: [
         laravel({
             input: ['resources/css/app.css', 'resources/js/app.js'],
-            refresh: true,
+            refresh: [
+                'resources/routes/**',
+                'routes/**',
+                'resources/views/**',
+            ],
         }),
         tailwindcss(),
     ],
     server: {
         cors: true,
+    },
+
+    build: {
+        // Disables the preload.
+        modulePreload: false,
     },
 });
