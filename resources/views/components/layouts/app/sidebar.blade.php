@@ -90,15 +90,10 @@
 
                 <flux:menu.radio.group>
                     <flux:menu.item :href="route('roles')" icon="cloud-check"
-                                    wire:navigate>{{ __('Roles') }}</flux:menu.item>
+                                    wire:navigate>{{ __('Role/Permissions') }}</flux:menu.item>
                 </flux:menu.radio.group>
 
                 <flux:menu.separator/>
-
-                <flux:menu.radio.group>
-                    <flux:menu.item :href="route('settings.profile')" icon="shield-user"
-                                    wire:navigate>{{ __('Permissions') }}</flux:menu.item>
-                </flux:menu.radio.group>
                 @else
 
                 @endrole

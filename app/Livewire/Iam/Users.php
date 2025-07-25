@@ -4,6 +4,7 @@ namespace App\Livewire\Iam;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Livewire\Component;
 use Spatie\Permission\Models\Role;
@@ -18,6 +19,14 @@ class Users extends Component
     public $user = '';
     public $users = '';
 
+    protected $listeners = [
+        'user-registered' => 'mount',
+    ];
+
+    public function getUsers(){
+        return User::with('roles')->get();
+    }
+
     public function mount()
     {
         $this->user = auth()->user();
@@ -27,7 +36,14 @@ class Users extends Component
         }
 
         $this->roles = Role::pluck('name')->toArray(); // Fetch available roles
-        $this->users = User::all();
+        $this->users = User::with('roles')->get();
+    }
+
+
+    public function modalClosedAction()
+    {
+       $this->reset(['name', 'email', 'password', 'role']);
+        $this->resetErrorBag();
     }
 
     public function registerUser()
@@ -50,6 +66,8 @@ class Users extends Component
         session()->flash('success', 'User registered successfully and role assigned.');
 
         $this->reset(['name', 'email', 'password', 'role']);
+
+        $this->dispatch("user-registered");
     }
 
     public function render()

@@ -1,5 +1,5 @@
 <div>
-    <flux:modal :dismissible="false" name="add-user" variant="flyout" position="right" class="md:w-96">
+    <flux:modal @close="modalClosedAction" :dismissible="false" name="add-user" variant="flyout" position="right" class="md:w-96">
         <div class="space-y-6">
             <div class="max-w-xl mt-10 space-y-6  dark:bg-zinc-900 rounded-lg p-6">
                 <h2 class="text-2xl font-bold text-center text-gray-800 dark:text-white">Register New User</h2>
@@ -96,7 +96,7 @@
 
                 <!-- Add User Button -->
                 <flux:modal.trigger name="add-user">
-                    <flux:button>Add user</flux:button>
+                    <flux:button variant="primary" icon="circle-plus">Add user</flux:button>
                 </flux:modal.trigger>
             </div>
         </div>
@@ -155,7 +155,7 @@
                                     </div>
                                     <div class="ml-4">
                                         <div class="text-base font-semibold text-slate-900 dark:text-white transition-colors duration-200">
-                                            {{ $user->name }}
+                                            {{ ucfirst($user->name) }}
                                         </div>
                                         <div class="text-sm text-slate-500 dark:text-slate-400">
                                             Active user
@@ -174,7 +174,7 @@
                             <td class="px-6 py-5 whitespace-nowrap">
                                 @php
                                     $roleColors = [
-                                        'admin' => 'from-red-500 to-red-600 text-white',
+                                        'Super-admin-role' => 'from-red-500 to-red-600 text-white',
                                         'manager' => 'from-blue-500 to-blue-600 text-white',
                                         'developer' => 'from-green-500 to-green-600 text-white',
                                         'designer' => 'from-purple-500 to-purple-600 text-white',
@@ -184,7 +184,7 @@
                                 @endphp
                                 <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-bold bg-gradient-to-r {{ $colorClass }} shadow-sm">
                                     <div class="w-2 h-2 bg-white bg-opacity-30 rounded-full mr-2"></div>
-                                    {{ ucfirst($user->role) }}
+                                    {{ ucfirst($user->roles[0]->name) }}
                                 </span>
                             </td>
                             <td class="px-6 py-5 whitespace-nowrap text-right">
