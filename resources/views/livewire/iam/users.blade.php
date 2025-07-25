@@ -69,12 +69,12 @@
         <!-- Header Section -->
         <div class="mb-8">
             <div class="flex items-center justify-between mb-3">
-                <h2 class="text-3xl font-bold text-slate-800 dark:text-white">Team Management</h2>
+                <h2 class="text-3xl font-bold text-slate-800 dark:text-white">User Management</h2>
                 <div class="text-sm text-slate-500 dark:text-slate-400">
                     {{ $users->count() }} total users
                 </div>
             </div>
-            <p class="text-slate-600 dark:text-slate-300">Manage your team members and their roles</p>
+            <p class="text-slate-600 dark:text-slate-300">Manage your members and their roles</p>
         </div>
 
         <!-- Controls Section -->

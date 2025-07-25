@@ -78,11 +78,11 @@ class RolePermissionSeeder extends Seeder
         // Temporarily disable foreign key checks
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
 
-// Truncate the tables
+        // Truncate the tables
         Role::query()->truncate();
         Permission::query()->truncate();
 
-// Re-enable foreign key checks
+        // Re-enable foreign key checks
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
         // Create roles and assign permissions
         foreach ($roles as $roleName => $permissions) {
