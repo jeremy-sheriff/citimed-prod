@@ -65,7 +65,7 @@ jobs:
           protocol: ftp
           port: 21
           server-dir: /domains/citimedhospital.co.ke/build/
-          local-dir: build.zip/
+          local-dir: build.zip
 
       - name: Upload zipped contents via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
