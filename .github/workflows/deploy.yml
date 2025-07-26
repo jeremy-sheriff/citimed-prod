@@ -56,16 +56,7 @@ jobs:
             "*.md" \
             ".env"
 
-      - name: Upload zipped public contents via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-        with:
-          server: ${{secrets.FTP_HOST}}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          protocol: ftp
-          port: 21
-          server-dir: /domains/citimedhospital.co.ke/build/
-          local-dir: build.zip
+
 
       - name: Upload zipped contents via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
