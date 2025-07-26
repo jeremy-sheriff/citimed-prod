@@ -40,10 +40,10 @@ jobs:
         run: |
           npm run build
 
-      - name: Move build assets to the correct location
+      - name: Zip build contents
         run: |
-          mv public/build/assets/app-C3Ox5C8m.css citimedhospital.co.ke/public/build/assets/
-          mv public/build/assets/app-l0sNRNKZ.js citimedhospital.co.ke/public/build/assets/
+          cd public/build
+          zip -r ../../build.zip .
 
       - name: Zip project contents (excluding unnecessary files)
         run: |
@@ -55,6 +55,16 @@ jobs:
             "tests/**" \
             "*.md" \
             ".env"
+
+      - name: Upload zipped public contents via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{secrets.FTP_HOST}}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftp
+          port: 21
+          server-dir: /domains/citimedh/domains/citimedhospital.co.ke/build
 
       - name: Upload zipped contents via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
