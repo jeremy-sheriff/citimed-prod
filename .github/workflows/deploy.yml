@@ -13,6 +13,19 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Install dependencies
+        run: |
+          npm install
+
+      - name: Build project for production
+        run: |
+          npm run prod
+
+      - name: Move build assets to the correct location
+        run: |
+          mv public/build/assets/app-C3Ox5C8m.css citimedhospital.co.ke/public/build/assets/
+          mv public/build/assets/app-l0sNRNKZ.js citimedhospital.co.ke/public/build/assets/
+
       - name: Zip project contents (excluding unnecessary files)
         run: |
           zip -r app.zip . -x \
