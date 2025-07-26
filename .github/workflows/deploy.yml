@@ -64,7 +64,7 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftp
           port: 21
-          server-dir: /domains/citimedh/domains/citimedhospital.co.ke/build
+          server-dir: /domains/citimedh/domains/citimedhospital.co.ke/build/
 
       - name: Upload zipped contents via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
