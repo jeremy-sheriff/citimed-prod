@@ -10,27 +10,27 @@ use Illuminate\Support\Facades\DB;
 class Add extends Component
 {
     #[Validate('required|string|max:255')]
-    public $name = '';
+    public string $name = '';
 
     #[Validate('required|integer|min:0|max:120')]
-    public $age = '';
+    public string $age = '';
 
     #[Validate('required|in:male,female,other')]
-    public $gender = 'female';
+    public string $gender = 'female';
 
-    #[Validate('required|string|max:20')]
-    public $phone_number = '';
+    #[Validate('required|string|max:20|unique:patients,phone_number')]
+    public string $phone_number = '';
 
     #[Validate('required|string|max:500')]
-    public $location = '';
+    public string $location = '';
 
     #[Validate('nullable|string|max:1000')]
-    public $additional_information = '';
+    public string $additional_information = 'More information about patient';
 
-    public $isSubmitting = false;
-    public $showSuccessMessage = false;
+    public bool $isSubmitting = false;
+    public bool $showSuccessMessage = false;
 
-    protected $messages = [
+    protected array $messages = [
         'name.required' => 'Patient name is required.',
         'age.required' => 'Patient age is required.',
         'age.integer' => 'Age must be a valid number.',
@@ -41,6 +41,18 @@ class Add extends Component
         'location.required' => 'Location is required.',
     ];
 
+    protected function generatePatientNumber(): int
+    {
+        $patient_number = 0;
+        if (Patient::query()->count() === 0) {
+            $patient_number = 100;
+        } else {
+            $patient = Patient::query()->latest('created_at')->first();
+            $patient_number = $patient->number += 1;
+        }
+        return $patient_number;
+    }
+
     public function save()
     {
         $this->isSubmitting = true;
@@ -50,13 +62,15 @@ class Add extends Component
         try {
             DB::beginTransaction();
 
-            Patient::create([
+            $patient_number = $this->generatePatientNumber();
+            Patient::query()->create([
                 'name' => $this->name,
                 'age' => $this->age,
                 'gender' => $this->gender,
+                'number' => $patient_number,
                 'phone_number' => $this->phone_number,
-                'location' => $this->location,
-                'additional_information' => $this->additional_information,
+                'residence' => $this->location,
+                'information' => $this->additional_information,
             ]);
 
             DB::commit();
@@ -67,7 +81,8 @@ class Add extends Component
 
             $this->showSuccessMessage = true;
 
-            // Hide success message after 3 seconds
+            // Hide a success message after 3 seconds
+            $this->dispatch(['patient-created']);
             $this->dispatch('hide-success-message');
 
         } catch (\Exception $e) {

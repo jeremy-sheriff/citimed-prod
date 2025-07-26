@@ -7,6 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Patient extends Model
 {
+
+    public function visits()
+    {
+        return $this->hasMany(Visit::class);
+    }
+    protected $guarded = [];
     protected function name(): Attribute
     {
         return Attribute::make(

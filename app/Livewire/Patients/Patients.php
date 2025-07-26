@@ -18,9 +18,16 @@ class Patients extends Component
     public $roles = [];
     public $permissions = [];
 
+    protected $listeners = [
+        'patient-created' => '$refresh',
+        'patient-updated' => '$refresh',
+    ];
+
     // Search and filtering
     #[Url(as: 'q')]
     public $search = '';
+
+    public int $perPage = 10;
 
     #[Url]
     public $sortField = 'created_at';
@@ -55,6 +62,10 @@ class Patients extends Component
 
     public function openPatientHistory($patient){
         $this->dispatch('open-patient-history', ['patient' => $patient]);
+    }
+
+    public function updatePatient($patient){
+        $this->dispatch('update-patient', ['patient' => $patient]);
     }
     public function updatedSearch()
     {
@@ -130,7 +141,7 @@ class Patients extends Component
         // Sorting
         $query->orderBy($this->sortField, $this->sortDirection);
 
-        return $query->paginate(10);
+        return $query->paginate($this->perPage);
     }
 
     public function confirmDelete($patientId)

@@ -16,6 +16,7 @@ Route::get('/', function () {
 
 Route::get('/dashboard', Dashboard::class)->name('dashboard');
 Route::get('/patients', \App\Livewire\Patients\Patients::class);
+Route::get('/visits', \App\Livewire\Visits\Add::class);
 
 Route::middleware(['auth'])->group(function () {
     Route::redirect('settings', 'settings/profile');

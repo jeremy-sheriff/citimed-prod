@@ -44,8 +44,12 @@
 
 
 
-    <flux:modal :dismissible="false" name="add-patient" class="bg-gray-500">
+    <flux:modal :dismissible="false" name="add-patient">
         <livewire:patients.add />
+    </flux:modal>
+
+    <flux:modal :dismissible="false" name="update-patient">
+        <livewire:patients.update />
     </flux:modal>
 
 
@@ -114,7 +118,10 @@
                         <flux:modal.trigger name="edit-profile">
                             <flux:button wire:click="openPatientHistory({{$patient}})" variant="primary" color="sky" icon="file-stack" class="mr-2">History</flux:button>
                         </flux:modal.trigger>
-                        <flux:button variant="primary" color="amber" icon="square-pen">Edit</flux:button>
+
+                        <flux:modal.trigger name="update-patient" class="mr-2">
+                            <flux:button wire:click="updatePatient({{$patient}})" variant="primary" color="amber" icon="square-pen" class="mr-2">Edit</flux:button>
+                        </flux:modal.trigger>
                         <flux:button variant="primary" color="red" icon="trash">Delete</flux:button>
                     </td>
                 </tr>

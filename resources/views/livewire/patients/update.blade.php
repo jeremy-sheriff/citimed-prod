@@ -18,7 +18,7 @@
                     <svg class="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                     </svg>
-                    <p class="text-green-800 font-medium">Patient information saved successfully!</p>
+                    <p class="text-green-800 font-medium">Patient information updated successfully!</p>
                 </div>
             </div>
         @endif
@@ -180,9 +180,9 @@
             <div class="flex items-center justify-between pt-6 mt-6 border-t border-gray-200">
 
                 <div class="flex space-x-3">
-                    <flux:button variant="primary" color="rose" x-on:click="$flux.modal('add-patient').close()">Cancel</flux:button>
+                    <flux:button variant="primary" color="rose" x-on:click="$flux.modal('update-patient').close()">Cancel</flux:button>
 
-                    <flux:button type="submit" variant="primary" color="blue" icon="user-plus">Save</flux:button>
+                    <flux:button type="submit" variant="primary" color="blue" icon="user-plus">Update</flux:button>
                 </div>
             </div>
         </form>
