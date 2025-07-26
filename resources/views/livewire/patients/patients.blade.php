@@ -33,7 +33,10 @@
     <div class="mb-4 flex justify-between items-center">
         <div>
             <button wire:click="exportToExcel" class="bg-blue-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-600 transition duration-300">Export all patients to Excel</button>
-            <button class="ml-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-green-600 transition duration-300">Add Patient</button>
+
+            <flux:modal.trigger name="add-patient" class="ml-4">
+                <flux:button variant="primary" color="emerald" icon="message-circle-plus">Add Patient</flux:button>
+            </flux:modal.trigger>
         </div>
         <input wire:model.debounce.500ms="search" type="text" class="border border-gray-300 p-2 rounded-lg w-1/4" placeholder="Search by Patient Name" />
     </div>
@@ -41,7 +44,12 @@
 
 
 
-    <flux:modal name="edit-profile" variant="flyout" class="animated-modal">
+    <flux:modal :dismissible="false" name="add-patient" class="bg-gray-500">
+        <livewire:patients.add />
+    </flux:modal>
+
+
+    <flux:modal :dismissible="false" name="edit-profile" variant="flyout" class="animated-modal">
         <div class="space-y-6 modal-content">
             <livewire:patients.history />
         </div>
