@@ -27,7 +27,7 @@ class Patients extends Component
     #[Url(as: 'q')]
     public $search = '';
 
-    public int $perPage = 10;
+    public int $perPage = 15;
 
     #[Url]
     public $sortField = 'created_at';

@@ -263,7 +263,7 @@ class Add extends Component
             $query->where('name', 'like', '%' . $this->search_name . '%');
         }
 
-        $patients = $query->orderBy('name')->paginate(8);
+        $patients = $query->orderBy('name')->paginate(15, ['*'], 'patient_page', $this->patient_page ?? 1);;
 
         return view('livewire.visits.add', compact('patients'));
     }
