@@ -15,8 +15,9 @@ class Patient extends Model
     protected $guarded = [];
     protected function name(): Attribute
     {
+
         return Attribute::make(
-            get: fn (string $value) => ucfirst($value),
+            get: fn (string $value) => ucwords(strtolower($value)),
         );
     }
 }

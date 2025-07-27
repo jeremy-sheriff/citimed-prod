@@ -40,6 +40,160 @@
         </div>
     </div>
 
+
+    @isset($patient)
+        <flux:modal name="add-visit" variant="flyout" :dismissible="false" position="left" class="md:w-[900px]">
+            <div class="space-y-6">
+                <div>
+                    <flux:heading size="lg">Add Visit for {{$patient->name}}</flux:heading>
+                    <flux:text class="mt-2">Fill in the visit details below.</flux:text>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Complaints full width -->
+                    <div class="md:col-span-3">
+                        <flux:field>
+                            <flux:label>Complaints</flux:label>
+                            <flux:textarea
+                                placeholder="Describe complaints"
+                                name="complaints"
+                                wire:model.defer="complaints"
+                            />
+                            <flux:description>Patient's complaints during the visit.</flux:description>
+                            <flux:error name="complaints" />
+                        </flux:field>
+                    </div>
+
+                    <!-- History of Presenting Illness -->
+                    <flux:field>
+                        <flux:label>History of Presenting Illness</flux:label>
+                        <flux:textarea
+                            placeholder="History details"
+                            name="history_of_presenting_illness"
+                            wire:model.defer="history_of_presenting_illness"
+                        />
+                        <flux:description>Relevant history for diagnosis.</flux:description>
+                        <flux:error name="history_of_presenting_illness" />
+                    </flux:field>
+
+                    <!-- Allergies -->
+                    <flux:field>
+                        <flux:label>Allergies</flux:label>
+                        <flux:textarea
+                            placeholder="List allergies"
+                            name="allergies"
+                            wire:model.defer="allergies"
+                        />
+                        <flux:description>Known allergies of the patient.</flux:description>
+                        <flux:error name="allergies" />
+                    </flux:field>
+
+                    <!-- Physical Examination -->
+                    <flux:field>
+                        <flux:label>Physical Examination</flux:label>
+                        <flux:textarea
+                            placeholder="Physical exam notes"
+                            name="physical_examination"
+                            wire:model.defer="physical_examination"
+                        />
+                        <flux:description>Findings from the physical examination.</flux:description>
+                        <flux:error name="physical_examination" />
+                    </flux:field>
+
+                    <!-- Lab Test And Results -->
+                    <flux:field>
+                        <flux:label>Lab Test And Results</flux:label>
+                        <flux:textarea
+                            placeholder="Lab test details"
+                            name="lab_test"
+                            wire:model.defer="lab_test"
+                        />
+                        <flux:description>Laboratory tests ordered or results.</flux:description>
+                        <flux:error name="lab_test" />
+                    </flux:field>
+
+                    <!-- Diagnosis -->
+                    <flux:field>
+                        <flux:label>Diagnosis</flux:label>
+                        <flux:textarea
+                            placeholder="Diagnosis notes"
+                            name="diagnosis"
+                            wire:model.defer="diagnosis"
+                        />
+                        <flux:description>Doctor's diagnosis.</flux:description>
+                        <flux:error name="diagnosis" />
+                    </flux:field>
+
+                    <!-- Type of Diagnosis -->
+                    <flux:field>
+                        <flux:label>Select the type of Diagnosis</flux:label>
+                        <div class="space-y-1">
+                            <flux:radio
+                                name="type_of_diagnosis"
+                                value="infection"
+                                label="Infection"
+                                wire:model.defer="type_of_diagnosis"
+                            />
+                            <flux:radio
+                                name="type_of_diagnosis"
+                                value="short_term"
+                                label="Short Term"
+                                wire:model.defer="type_of_diagnosis"
+                            />
+                            <flux:radio
+                                name="type_of_diagnosis"
+                                value="chronic"
+                                label="Chronic"
+                                wire:model.defer="type_of_diagnosis"
+                            />
+                        </div>
+                        <flux:error name="type_of_diagnosis" />
+                    </flux:field>
+
+                    <!-- Imaging full width -->
+                    <div class="md:col-span-3">
+                        <flux:field>
+                            <flux:label>Imaging</flux:label>
+                            <flux:textarea
+                                placeholder="Imaging results"
+                                name="imaging"
+                                wire:model.defer="imaging"
+                            />
+                            <flux:description>Imaging studies and results.</flux:description>
+                            <flux:error name="imaging" />
+                        </flux:field>
+                    </div>
+
+                    <!-- Prescriptions full width -->
+                    <div class="md:col-span-3">
+                        <flux:field>
+                            <flux:label>Prescriptions</flux:label>
+                            <flux:textarea
+                                placeholder="Prescribed medications"
+                                name="prescriptions"
+                                wire:model.defer="prescriptions"
+                            />
+                            <flux:description>Medications prescribed during visit.</flux:description>
+                            <flux:error name="prescriptions" />
+                        </flux:field>
+                    </div>
+                </div>
+
+                <div class="flex">
+                    <flux:spacer />
+                    <flux:button type="submit" variant="primary" wire:click="saveVisit">Save visit</flux:button>
+                </div>
+            </div>
+        </flux:modal>
+    @endisset
+
+
+
+
+
+
+
+
     <!-- Patients Table -->
     <div class="bg-white dark:bg-gray-800 shadow rounded-lg overflow-hidden">
         <div class="overflow-x-auto">
@@ -71,34 +225,29 @@
                 </thead>
                 <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
                 @forelse($patients as $index => $patient)
-                    <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400 border-r border-gray-200 dark:border-gray-600">
+                    <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 odd:bg-gray-100 even:bg-white">
+                        <td class="px-6 py-3 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400 border-r border-gray-200 dark:border-gray-600">
                             {{ ($patients->currentPage() - 1) * $patients->perPage() + $index + 1 }}
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100 border-r border-gray-200 dark:border-gray-600">
+                        <td class="px-6 py-3 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100 border-r border-gray-200 dark:border-gray-600">
                             {{ $patient->number ?? 'N/A' }}
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100 border-r border-gray-200 dark:border-gray-600">
-                            {{ $patient->name }}
+                        <td class="px-6 py-3 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100 border-r border-gray-200 dark:border-gray-600">
+                            {{ ucfirst($patient->name) }}
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400 border-r border-gray-200 dark:border-gray-600">
+                        <td class="px-6 py-3 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400 border-r border-gray-200 dark:border-gray-600">
                             {{ $patient->age ?? 'N/A' }}
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400 border-r border-gray-200 dark:border-gray-600">
-                            {{ $patient->phone ?? 'N/A' }}
+                        <td class="px-6 py-3 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400 border-r border-gray-200 dark:border-gray-600">
+                            {{ $patient->phone_number ?? 'N/A' }}
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400 border-r border-gray-200 dark:border-gray-600">
+                        <td class="px-6 py-3 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400 border-r border-gray-200 dark:border-gray-600">
                             {{ $patient->residence ?? 'N/A' }}
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-                            <button
-                                class="inline-flex items-center px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                            >
-                                <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path>
-                                </svg>
-                                Add Visit
-                            </button>
+                        <td class="px-6 py-3 whitespace-nowrap text-sm font-medium space-x-2">
+                            <flux:modal.trigger name="add-visit">
+                                <flux:button wire:click="setModal({{$patient}})" variant="primary" color="sky" icon="user-plus">Add Visit</flux:button>
+                            </flux:modal.trigger>
                         </td>
                     </tr>
                 @empty

@@ -16,10 +16,13 @@ return new class extends Migration
             $table->unsignedBigInteger('patient_id');
             $table->foreign('patient_id')->references('id')->on('patients');
             $table->longText('complaints');
+            $table->string('history_of_presenting_illness');
             $table->longText('allergies')->nullable();
             $table->longText('physical_examination');
             $table->longText('lab_test');
+            $table->longText('imaging');
             $table->longText('diagnosis');
+            $table->string('type_of_diagnosis');
             $table->longText('prescriptions');
             $table->timestamps();
         });

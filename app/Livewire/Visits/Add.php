@@ -19,32 +19,34 @@ class Add extends Component
     #[Validate('required|exists:patients,id')]
     public $patient_id = '';
 
+    public Patient|null $patient = null;
+
     #[Validate('required|string|max:1000')]
-    public $complaints = '';
+    public $complaints = 'Complaints:';
 
     #[Validate('nullable|string|max:2000')]
-    public $history_of_presenting_illness = '';
+    public $history_of_presenting_illness = 'History of presenting illness:';
 
     #[Validate('nullable|string|max:500')]
-    public $allergies = '';
+    public $allergies = 'Allergies';
 
     #[Validate('nullable|string|max:2000')]
-    public $physical_examination = '';
+    public $physical_examination = 'Physical examination results';
 
     #[Validate('nullable|string|max:1000')]
-    public $lab_test = '';
+    public $lab_test = 'Lab test results';
 
     #[Validate('nullable|string|max:1000')]
-    public $imaging = '';
+    public $imaging = 'Imaging data';
 
     #[Validate('required|string|max:1000')]
-    public $diagnosis = '';
+    public $diagnosis = 'Homa';
 
     #[Validate('required|in:chronic,infection,short_term')]
-    public $type_of_diagnosis = '';
+    public $type_of_diagnosis = 'short_term';
 
     #[Validate('nullable|string|max:2000')]
-    public $prescriptions = '';
+    public $prescriptions = 'Kulala';
 
     #[Validate('required|numeric|min:0')]
     public $amount_charged = 0;
@@ -67,10 +69,19 @@ class Add extends Component
     // Remove the $patients property since we'll use render() method
     // public $patients = [];
 
-    public function mount()
+    public function mount($patientId = null)
     {
-        // Remove this since we don't need to load patients in mount anymore
-        // $this->loadPatients();
+        $this->patient_id = $patientId;
+    }
+
+    public function setModal(Patient $patient)
+    {
+        $this->patient = $patient;
+        $this->patient_id = $patient->id;
+    }
+
+    public function createVisit(){
+
     }
 
     // Remove the loadPatients method since we'll handle this in render()
@@ -181,13 +192,15 @@ class Add extends Component
         return 0;
     }
 
-    public function save()
+    public function saveVisit()
     {
         $this->validate();
 
+
+
         try {
             // Create the visit
-            $visit = Visit::create([
+            $visit = Visit::query()->create([
                 'patient_id' => $this->patient_id,
                 'complaints' => $this->complaints,
                 'history_of_presenting_illness' => $this->history_of_presenting_illness,
@@ -201,7 +214,7 @@ class Add extends Component
             ]);
 
             // Create the payment
-            $payment = Payment::create([
+            $payment = Payment::query()->create([
                 'visit_id' => $visit->id,
                 'amount_charged' => $this->amount_charged,
                 'amount_paid' => $this->amount_paid,
@@ -263,7 +276,8 @@ class Add extends Component
             $query->where('name', 'like', '%' . $this->search_name . '%');
         }
 
-        $patients = $query->orderBy('name')->paginate(15, ['*'], 'patient_page', $this->patient_page ?? 1);;
+        $patients = $query->orderBy('name')->paginate(15, ['*'], 'patient_page', $this->patient_page ?? 1);
+
 
         return view('livewire.visits.add', compact('patients'));
     }
