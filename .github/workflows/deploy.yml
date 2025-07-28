@@ -25,23 +25,23 @@ jobs:
         run: chmod -R 777 storage bootstrap/cache
 
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-            node-version: '20.19.2'
-
-      - name: Install dependencies
-        run: |
-          npm install
-
-      - name: Build project for production
-        run: |
-          npm run build
-
-      - name: Zip build contents
-        run: |
-          cd public/build
-          zip -r ../../build.zip .
+#      - name: Set up Node.js
+#        uses: actions/setup-node@v3
+#        with:
+#            node-version: '20.19.2'
+#
+#      - name: Install dependencies
+#        run: |
+#          npm install
+#
+#      - name: Build project for production
+#        run: |
+#          npm run build
+#
+#      - name: Zip build contents
+#        run: |
+#          cd public/build
+#          zip -r ../../build.zip .
 
       - name: Zip project contents (excluding unnecessary files)
         run: |
