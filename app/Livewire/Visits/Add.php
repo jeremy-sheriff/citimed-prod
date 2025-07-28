@@ -226,14 +226,14 @@ class Add extends Component
             $next_balance = abs($this->amount_paid - ($this->previous_balance + $this->amount_charged));
 
             if ($next_balance >= 0) {
-                // Mark previous balance as carried forward if exists
+                // Mark the previous balance as carried forward if exists
                 if ($this->previous_balance > 0 && $this->previous_balance_id) {
                     Balance::find($this->previous_balance_id)->update([
                         'status' => 'carried_foward'
                     ]);
                 }
 
-                // Create new balance record
+                // Create a new balance record
                 Balance::create([
                     'payment_id' => $payment->id,
                     'amount' => $next_balance,
