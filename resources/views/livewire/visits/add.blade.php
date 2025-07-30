@@ -39,7 +39,6 @@
         </div>
     </div>
 
-
     @isset($patient)
         <flux:modal name="add-visit" variant="flyout" :dismissible="false" position="left" class="md:w-[900px]">
             <div class="space-y-6">
