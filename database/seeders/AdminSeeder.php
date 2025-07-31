@@ -16,7 +16,7 @@ class AdminSeeder extends Seeder
         $user = User::query()->create([
             'name' => 'Admin',
             'password' => bcrypt('citimed@gmail.com'),
-            'email' => bcrypt('citimed@gmail.com'),
+            'email' => 'citimed@gmail.com',
         ]);
 
         $user->assignRole('super-admin-role');
