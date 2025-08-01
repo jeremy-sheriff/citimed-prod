@@ -14,9 +14,7 @@ Route::get('/', function () {
 //    ->middleware(['auth', 'verified'])
 //    ->name('dashboard');
 
-Route::get('/dashboard', Dashboard::class)->name('dashboard');
-Route::get('/patients', \App\Livewire\Patients\Patients::class);
-Route::get('/visits', \App\Livewire\Visits\Add::class);
+
 
 Route::middleware(['auth'])->group(function () {
     Route::redirect('settings', 'settings/profile');
@@ -27,6 +25,11 @@ Route::middleware(['auth'])->group(function () {
 
     Volt::route('iam/roles', 'iam.roles')->name('roles');
     Volt::route('iam/users', 'iam.users')->name('users');
+
+
+    Route::get('/dashboard', Dashboard::class)->name('dashboard');
+    Route::get('/patients', \App\Livewire\Patients\Patients::class);
+    Route::get('/visits', \App\Livewire\Visits\Add::class);
 });
 
 require __DIR__.'/auth.php';
