@@ -9,45 +9,65 @@ use App\Models\Patient;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 use Livewire\Attributes\Validate;
-use Livewire\WithPagination; // Add this trait
+use Livewire\WithPagination;
 use Carbon\Carbon;
 
+/**
+ * Add Visit Livewire Component
+ *
+ * This component handles the functionality for adding new patient visits in the medical system.
+ * It provides features for:
+ * - Searching and selecting patients
+ * - Recording medical information for the visit
+ * - Handling financial transactions related to the visit
+ * - Displaying a paginated list of patients
+ */
 class Add extends Component
 {
-    use WithPagination; // Add this trait
+    use WithPagination;
 
+    /**
+     * Patient Information Properties
+     */
     #[Validate('required|exists:patients,id')]
     public $patient_id = '';
 
     public Patient|null $patient = null;
+    public $selected_patient = null;
 
+    /**
+     * Visit Medical Information Properties
+     */
     #[Validate('required|string|max:1000')]
-    public string $complaints = 'Complaints:';
+    public string $complaints = '';
 
     #[Validate('nullable|string|max:2000')]
-    public string $history_of_presenting_illness = 'History of presenting illness:';
+    public string $history_of_presenting_illness = '';
 
     #[Validate('nullable|string|max:500')]
-    public string $allergies = 'Allergies';
+    public string $allergies = '';
 
     #[Validate('nullable|string|max:2000')]
-    public $physical_examination = 'Physical examination results';
+    public $physical_examination = '';
 
     #[Validate('nullable|string|max:1000')]
-    public string $lab_test = 'Lab test results';
+    public string $lab_test = '';
 
     #[Validate('nullable|string|max:1000')]
-    public $imaging = 'Imaging data';
+    public $imaging = '';
 
     #[Validate('required|string|max:1000')]
-    public $diagnosis = 'Homa';
+    public $diagnosis = '';
 
     #[Validate('required|in:chronic,infection,short_term')]
     public $type_of_diagnosis = '';
 
     #[Validate('nullable|string|max:2000')]
-    public $prescriptions = 'Kulala';
+    public $prescriptions = '';
 
+    /**
+     * Financial Information Properties
+     */
     #[Validate('required|numeric|min:0')]
     public $amount_charged = 0;
 
@@ -60,19 +80,30 @@ class Add extends Component
     public $previous_balance = 0;
     public $previous_balance_id = null;
     public $calculated_balance = 0;
-    public $selected_patient = null;
 
-    // Search properties
+    /**
+     * Patient Search Properties
+     */
+    // Table search
     public $search_number = '';
     public $search_name = '';
 
+    // Dropdown search
     public $search = '';
     public $results = [];
     public $selectedPatientId = null;
     public $selectedPatientName = '';
-    public $selectedPatient = null; // Add this property
+    public $selectedPatient = null;
     public $showDropdown = false;
 
+    /**
+     * PATIENT SEARCH AND SELECTION METHODS
+     */
+
+    /**
+     * Handles live search as user types in the patient search field
+     * Updates search results and manages the dropdown visibility
+     */
     public function updatedSearch()
     {
         if (strlen($this->search) >= 2) {
@@ -90,10 +121,16 @@ class Add extends Component
         if ($this->search !== $this->selectedPatientName) {
             $this->selectedPatientId = null;
             $this->selectedPatientName = '';
-            $this->selectedPatient = null; // Clear the full patient object
+            $this->selectedPatient = null;
         }
     }
 
+    /**
+     * Selects a patient from the search results
+     *
+     * @param int $patientId The ID of the selected patient
+     * @param string $patientName The name of the selected patient
+     */
     public function selectPatient($patientId, $patientName)
     {
         $this->selectedPatientId = $patientId;
@@ -111,11 +148,14 @@ class Add extends Component
         ]);
     }
 
+    /**
+     * Clears the currently selected patient
+     */
     public function clearSelection()
     {
         $this->selectedPatientId = null;
         $this->selectedPatientName = '';
-        $this->selectedPatient = null; // Clear the full patient object
+        $this->selectedPatient = null;
         $this->search = '';
         $this->showDropdown = false;
         $this->results = [];
@@ -123,65 +163,95 @@ class Add extends Component
         $this->dispatch('patientCleared');
     }
 
-    // Hide dropdown when clicking outside
+    /**
+     * Hides the search dropdown when clicking outside
+     */
     public function hideDropdown()
     {
         $this->showDropdown = false;
     }
 
-    // Remove the $patients property since we'll use render() method
-    // public $patients = [];
+    /**
+     * COMPONENT LIFECYCLE METHODS
+     */
 
+    /**
+     * Initialize the component
+     *
+     * @param int|null $patientId Optional patient ID to pre-select
+     */
     public function mount($patientId = null)
     {
         $this->patient_id = $patientId;
     }
 
+    /**
+     * Set the patient for the modal
+     *
+     * @param Patient $patient The patient to set
+     */
     public function setModal(Patient $patient)
     {
         $this->patient = $patient;
         $this->patient_id = $patient->id;
     }
 
-    public function createVisit(){
+    /**
+     * TABLE SEARCH AND PAGINATION METHODS
+     */
 
-    }
-
-    // Remove the loadPatients method since we'll handle this in render()
-    /*
-    public function loadPatients()
-    {
-        $query = Patient::query();
-
-        if ($this->search_number) {
-            $query->where('number', 'like', '%' . $this->search_number . '%');
-        }
-
-        if ($this->search_name) {
-            $query->where('name', 'like', '%' . $this->search_name . '%');
-        }
-
-        $this->patients = $query->orderBy('name')->get();
-    }
-    */
-
+    /**
+     * Search patients by number and reset pagination
+     */
     public function searchByNumber()
     {
-        $this->resetPage(); // Reset pagination when searching
+        $this->resetPage();
     }
 
+    /**
+     * Search patients by name and reset pagination
+     */
     public function searchByName()
     {
-        $this->resetPage(); // Reset pagination when searching
+        $this->resetPage();
     }
 
+    /**
+     * Clear all search fields and reset pagination
+     */
     public function clearSearch()
     {
         $this->search_number = '';
         $this->search_name = '';
-        $this->resetPage(); // Reset pagination when clearing search
+        $this->resetPage();
     }
 
+    /**
+     * Reset pagination when search number is updated
+     */
+    public function updatedSearchNumber()
+    {
+        $this->resetPage();
+    }
+
+    /**
+     * Reset pagination when search name is updated
+     */
+    public function updatedSearchName()
+    {
+        $this->resetPage();
+    }
+
+    /**
+     * PATIENT AND FINANCIAL DATA METHODS
+     */
+
+    /**
+     * Handle changes to the patient ID
+     * Updates selected patient and calculates previous balance
+     *
+     * @param mixed $value The new patient ID value
+     */
     public function updatedPatientId($value)
     {
         if ($value) {
@@ -195,33 +265,37 @@ class Add extends Component
         }
     }
 
-    // Add updatedSearchNumber and updatedSearchName to reset pagination when typing
-    public function updatedSearchNumber()
-    {
-        $this->resetPage();
-    }
-
-    public function updatedSearchName()
-    {
-        $this->resetPage();
-    }
-
+    /**
+     * Recalculate balance when amount charged is updated
+     */
     public function updatedAmountCharged()
     {
         $this->calculateBalance();
     }
 
+    /**
+     * Recalculate balance when amount paid is updated
+     */
     public function updatedAmountPaid()
     {
         $this->calculateBalance();
     }
 
+    /**
+     * Calculate the balance based on previous balance, amount charged, and amount paid
+     */
     public function calculateBalance()
     {
         $total_due = $this->previous_balance + $this->amount_charged;
         $this->calculated_balance = $total_due - $this->amount_paid;
     }
 
+    /**
+     * Get the previous balance for a patient
+     *
+     * @param int $patient_id The patient ID to check for previous balance
+     * @return float The previous balance amount
+     */
     public function getPreviousBalance($patient_id)
     {
         $visit = Visit::where('patient_id', $patient_id);
@@ -255,10 +329,19 @@ class Add extends Component
         return 0;
     }
 
+    /**
+     * DATA SAVING METHODS
+     */
+
+    /**
+     * Save a new visit with all related data
+     *
+     * Creates a visit record, payment record, and handles balance calculations
+     *
+     * @return \Illuminate\Http\RedirectResponse|void Redirects to visits index on success
+     */
     public function saveVisit()
     {
-
-
         $this->validate();
 
         $patient_id = $this->selectedPatientId;
@@ -320,7 +403,7 @@ class Add extends Component
 
             session()->flash('success', 'Visit created successfully!');
 
-            // Optionally redirect to visits index or show page
+            // Redirect to visits index
             return redirect()->route('visits.index');
 
         } catch (\Exception $e) {
@@ -329,8 +412,20 @@ class Add extends Component
         }
     }
 
+    /**
+     * RENDERING METHODS
+     */
+
+    /**
+     * Render the component
+     *
+     * Handles patient filtering based on search criteria and returns the view
+     *
+     * @return \Illuminate\View\View The component view
+     */
     public function render()
     {
+        // Build query with filters
         $query = Patient::query();
 
         if ($this->search_number) {
@@ -341,9 +436,10 @@ class Add extends Component
             $query->where('name', 'like', '%' . $this->search_name . '%');
         }
 
+        // Get paginated results
         $patients = $query->orderBy('name')->paginate(15, ['*'], 'patient_page', $this->patient_page ?? 1);
 
-
+        // Return view with data
         return view('livewire.visits.add', compact('patients'));
     }
 }

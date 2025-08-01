@@ -1,57 +1,114 @@
+{{--
+    Main container for the Visits management interface
+    This component allows users to search for patients and add new visits
+--}}
 <div class="w-full mx-auto px-4 sm:px-6 lg:px-8">
 
-    <!-- Search Section -->
+    {{--
+        SECTION: Patient Search Panel
+        This section provides search functionality to find patients by number or name
+    --}}
     <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6 mb-6">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <!-- Patient Number Search -->
+            {{-- Patient Number Search Field --}}
             <div>
                 <flux:field>
                     <flux:label>Patient Number</flux:label>
                     <flux:description>Enter the patient's number.</flux:description>
-                    <flux:input autocomplete="off" wire:model="search_number" type="text" name="username" placeholder="Enter the patient's number" />
+                    <flux:input
+                        autocomplete="off"
+                        wire:model="search_number"
+                        type="text"
+                        name="username"
+                        placeholder="Enter the patient's number"
+                    />
                     <flux:error name="search_number" />
                 </flux:field>
 
-                <flux:button class="mt-3" wire:click="searchByNumber" variant="primary" color="zinc">Search By Number</flux:button>
+                <flux:button
+                    class="mt-3"
+                    wire:click="searchByNumber"
+                    variant="primary"
+                    color="zinc"
+                >
+                    Search By Number
+                </flux:button>
             </div>
 
-            <!-- Patient Name Search -->
+            {{-- Patient Name Search Field --}}
             <div>
                 <flux:field>
                     <flux:label>Patient Name</flux:label>
                     <flux:description>Enter the patient's name.</flux:description>
-                    <flux:input autocomplete="off" wire:model="search_name" type="text"  name="search_name" id="search_name" placeholder="Search by Patient Name" />
+                    <flux:input
+                        autocomplete="off"
+                        wire:model="search_name"
+                        type="text"
+                        name="search_name"
+                        id="search_name"
+                        placeholder="Search by Patient Name"
+                    />
                     <flux:error name="search_name" />
                 </flux:field>
 
-                <flux:button class="mt-3" wire:click="searchByName" variant="primary" color="blue">Search By Name</flux:button>
+                <flux:button
+                    class="mt-3"
+                    wire:click="searchByName"
+                    variant="primary"
+                    color="blue"
+                >
+                    Search By Name
+                </flux:button>
             </div>
         </div>
 
-        <!-- Clear Button -->
+        {{-- Action Buttons --}}
         <div class="mt-4">
-            <flux:button wire:click="clearSearch" variant="primary" color="zinc" icon="circle-x">Clear</flux:button>
+            <flux:button
+                wire:click="clearSearch"
+                variant="primary"
+                color="zinc"
+                icon="circle-x"
+            >
+                Clear
+            </flux:button>
 
             <flux:modal.trigger name="add-visit">
-                <flux:button variant="primary" color="sky" icon="user-plus">Add Visit</flux:button>
+                <flux:button
+                    variant="primary"
+                    color="sky"
+                    icon="user-plus"
+                >
+                    Add Visit
+                </flux:button>
             </flux:modal.trigger>
         </div>
     </div>
 
+    {{--
+        SECTION: Add Visit Modal
+        This modal contains the form for adding a new patient visit
+    --}}
     <flux:modal name="add-visit" variant="flyout" :dismissible="false" position="right" class="md:w-[900px]">
         <div class="space-y-6">
-
-
+            {{--
+                Patient Selection Component
+                This section allows searching for and selecting a patient for the visit
+            --}}
             <div class="relative" x-data="{ open: @entangle('showDropdown') }" @click.outside="$wire.hideDropdown()">
                 <flux:field>
                     <flux:label>Patient</flux:label>
                     <flux:description>Search and select a patient by name or number.</flux:description>
 
                     <div class="relative">
-                        <flux:input autocomplete="off" placeholder="Search patient by name or number" wire:model.live="search">
+                        <flux:input
+                            autocomplete="off"
+                            placeholder="Search patient by name or number"
+                            wire:model.live="search"
+                        >
                         </flux:input>
 
-                        {{-- Clear button --}}
+                        {{-- Clear button - Appears when a patient is selected --}}
                         @if($selectedPatientId)
                             <button
                                 type="button"
@@ -68,7 +125,10 @@
                     <flux:error name="selectedPatientId"/>
                 </flux:field>
 
-                {{-- Dropdown Results --}}
+                {{--
+                    Search Results Dropdown
+                    Displays matching patients as the user types in the search field
+                --}}
                 @if($showDropdown && count($results) > 0)
                     <div class="absolute z-50 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-y-auto">
                         @foreach($results as $patient)
@@ -95,7 +155,7 @@
                     </div>
                 @endif
 
-                {{-- No Results Message --}}
+                {{-- No Results Message - Shown when search returns no matches --}}
                 @if($showDropdown && strlen($search) >= 2 && count($results) == 0)
                     <div class="absolute z-50 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg">
                         <div class="px-4 py-3 text-gray-500 text-center">
@@ -109,10 +169,13 @@
                     </div>
                 @endif
 
-                {{-- Selected Patient Detailed Card --}}
+                {{--
+                    Selected Patient Card
+                    Displays detailed information about the selected patient
+                --}}
                 @if($selectedPatient)
                     <div class="mt-4 bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
-                        {{-- Card Header --}}
+                        {{-- Card Header with Patient Name and ID --}}
                         <div class="bg-gradient-to-r from-blue-500 to-blue-600 px-6 py-4">
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center">
@@ -132,10 +195,10 @@
                             </div>
                         </div>
 
-                        {{-- Card Body --}}
+                        {{-- Card Body with Patient Details --}}
                         <div class="p-6">
                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                                {{-- Personal Information --}}
+                                {{-- Personal Information Section --}}
                                 <div class="space-y-4">
                                     <h4 class="text-sm font-semibold text-gray-900 uppercase tracking-wide border-b border-gray-200 pb-2">
                                         Personal Information
@@ -166,7 +229,7 @@
                                     </div>
                                 </div>
 
-                                {{-- Contact Information --}}
+                                {{-- Contact Information Section --}}
                                 <div class="space-y-4">
                                     <h4 class="text-sm font-semibold text-gray-900 uppercase tracking-wide border-b border-gray-200 pb-2">
                                         Contact Information
@@ -194,7 +257,7 @@
                                     </div>
                                 </div>
 
-                                {{-- Medical Information --}}
+                                {{-- Medical Information Section --}}
                                 <div class="space-y-4">
                                     <h4 class="text-sm font-semibold text-gray-900 uppercase tracking-wide border-b border-gray-200 pb-2">
                                         Medical Information
@@ -219,7 +282,7 @@
                                 </div>
                             </div>
 
-                            {{-- Registration Date --}}
+                            {{-- Registration Date and Selection Status --}}
                             <div class="mt-6 pt-6 border-t border-gray-200">
                                 <div class="flex items-center justify-between">
                                     <div class="flex items-center text-sm text-gray-500">
@@ -229,12 +292,12 @@
                                         Patient registered on {{ $selectedPatient->created_at->format('M d, Y \a\t g:i A') }}
                                     </div>
                                     <div class="flex items-center">
-                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
-                                </svg>
-                                Selected
-                            </span>
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                            <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                            </svg>
+                                            Selected
+                                        </span>
                                     </div>
                                 </div>
                             </div>
@@ -246,8 +309,12 @@
                 <input type="hidden" name="patient_id" value="{{ $selectedPatientId }}">
             </div>
 
+            {{--
+                SECTION: Visit Form Fields
+                This section contains all the medical information fields for the visit
+            --}}
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- Complaints full width -->
+                {{-- Complaints (full width) --}}
                 <div class="md:col-span-3">
                     <flux:field>
                         <flux:label>Complaints</flux:label>
@@ -261,7 +328,7 @@
                     </flux:field>
                 </div>
 
-                <!-- History of Presenting Illness -->
+                {{-- History of Presenting Illness --}}
                 <flux:field>
                     <flux:label>History of Presenting Illness</flux:label>
                     <flux:textarea
@@ -273,7 +340,7 @@
                     <flux:error name="history_of_presenting_illness" />
                 </flux:field>
 
-                <!-- Allergies -->
+                {{-- Allergies --}}
                 <flux:field>
                     <flux:label>Allergies</flux:label>
                     <flux:textarea
@@ -285,7 +352,7 @@
                     <flux:error name="allergies" />
                 </flux:field>
 
-                <!-- Physical Examination -->
+                {{-- Physical Examination --}}
                 <flux:field>
                     <flux:label>Physical Examination</flux:label>
                     <flux:textarea
@@ -297,7 +364,7 @@
                     <flux:error name="physical_examination" />
                 </flux:field>
 
-                <!-- Lab Test And Results -->
+                {{-- Lab Test And Results --}}
                 <flux:field>
                     <flux:label>Lab Test And Results</flux:label>
                     <flux:textarea
@@ -309,7 +376,7 @@
                     <flux:error name="lab_test" />
                 </flux:field>
 
-                <!-- Diagnosis -->
+                {{-- Diagnosis --}}
                 <flux:field>
                     <flux:label>Diagnosis</flux:label>
                     <flux:textarea
@@ -321,15 +388,14 @@
                     <flux:error name="diagnosis" />
                 </flux:field>
 
-
-                <!-- Type of Diagnosis -->
+                {{-- Type of Diagnosis (Radio Button Group) --}}
                 <flux:radio.group wire:model="type_of_diagnosis" label="Select type of diagnosis">
                     <flux:radio value="infection" label="Infection" checked />
                     <flux:radio value="short_term" label="Short term" />
                     <flux:radio value="chronic" label="Chronic" />
                 </flux:radio.group>
 
-                <!-- Imaging full width -->
+                {{-- Imaging (full width) --}}
                 <div class="md:col-span-3">
                     <flux:field>
                         <flux:label>Imaging</flux:label>
@@ -343,7 +409,7 @@
                     </flux:field>
                 </div>
 
-                <!-- Prescriptions full width -->
+                {{-- Prescriptions (full width) --}}
                 <div class="md:col-span-3">
                     <flux:field>
                         <flux:label>Prescriptions</flux:label>
@@ -358,24 +424,29 @@
                 </div>
             </div>
 
+            {{-- Form Submit Button --}}
             <div class="flex">
                 <flux:spacer />
-                <flux:button type="submit" variant="primary" wire:click="saveVisit">Save visit</flux:button>
+                <flux:button
+                    type="submit"
+                    variant="primary"
+                    wire:click="saveVisit"
+                >
+                    Save visit
+                </flux:button>
             </div>
         </div>
     </flux:modal>
 
-
-
-
-
-
-
-
-    <!-- Patients Table -->
-    <div class="bg-white dark:bg-gray-800 shadow rounded-lg overflow-hidden">
+    {{--
+        SECTION: Patients Table
+        This section displays a table of patients with pagination
+    --}}
+    <div class="bg-white dark:bg-gray-800 shadow rounded-lg overflow-hidden mt-6">
+        {{-- Table with horizontal scrolling for small screens --}}
         <div class="overflow-x-auto">
             <table class="min-w-full table-auto border-collapse">
+                {{-- Table Header --}}
                 <thead class="bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-300">
                 <tr>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider border-r border-gray-200 dark:border-gray-600">
@@ -398,8 +469,11 @@
                     </th>
                 </tr>
                 </thead>
+
+                {{-- Table Body --}}
                 <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
                 @forelse($patients as $index => $patient)
+                    {{-- Patient Row --}}
                     <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 odd:bg-gray-100 even:bg-white">
                         <td class="px-6 py-3 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400 border-r border-gray-200 dark:border-gray-600">
                             {{ ($patients->currentPage() - 1) * $patients->perPage() + $index + 1 }}
@@ -421,6 +495,7 @@
                         </td>
                     </tr>
                 @empty
+                    {{-- Empty State - No Patients Found --}}
                     <tr>
                         <td colspan="7" class="px-6 py-4 text-center text-sm text-gray-500 dark:text-gray-400">
                             No patients found
@@ -431,22 +506,29 @@
             </table>
         </div>
 
-        <!-- Pagination Footer -->
+        {{-- Pagination Controls --}}
         <div class="bg-white dark:bg-gray-800 px-4 py-3 border-t border-gray-200 dark:border-gray-700 sm:px-6">
             <div class="flex items-center justify-between">
+                {{-- Mobile Pagination Controls --}}
                 <div class="flex-1 flex justify-between sm:hidden">
                     @if ($patients->onFirstPage())
                         <span class="relative inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 cursor-default">
                             Previous
                         </span>
                     @else
-                        <button wire:click="previousPage" class="relative inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700">
+                        <button
+                            wire:click="previousPage"
+                            class="relative inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700"
+                        >
                             Previous
                         </button>
                     @endif
 
                     @if ($patients->hasMorePages())
-                        <button wire:click="nextPage" class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700">
+                        <button
+                            wire:click="nextPage"
+                            class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700"
+                        >
                             Next
                         </button>
                     @else
@@ -455,6 +537,8 @@
                         </span>
                     @endif
                 </div>
+
+                {{-- Desktop Pagination Controls --}}
                 <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
                     <div>
                         {{ $patients->links() }}
