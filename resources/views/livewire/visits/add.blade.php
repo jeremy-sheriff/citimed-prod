@@ -40,10 +40,7 @@
 
     <flux:modal name="add-visit" variant="flyout" :dismissible="false" position="right" class="md:w-[900px]">
         <div class="space-y-6">
-            <div>
-                <flux:heading size="lg">Add Visit</flux:heading>
-                <flux:text class="mt-2">Fill in the visit details below.</flux:text>
-            </div>
+
 
             <div class="relative" x-data="{ open: @entangle('showDropdown') }" @click.outside="$wire.hideDropdown()">
                 <flux:field>
@@ -51,11 +48,8 @@
                     <flux:description>Search and select a patient by name or number.</flux:description>
 
                     <div class="relative">
-                        <flux:input
-                            wire:model.live="search"
-                            placeholder="Type patient name or number..."
-                            autocomplete="off"
-                        />
+                        <flux:input autocomplete="off" placeholder="Search patient by name or number" wire:model.live="search">
+                        </flux:input>
 
                         {{-- Clear button --}}
                         @if($selectedPatientId)
