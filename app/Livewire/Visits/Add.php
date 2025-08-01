@@ -70,6 +70,7 @@ class Add extends Component
     public $results = [];
     public $selectedPatientId = null;
     public $selectedPatientName = '';
+    public $selectedPatient = null; // Add this property
     public $showDropdown = false;
 
     public function updatedSearch()
@@ -89,6 +90,7 @@ class Add extends Component
         if ($this->search !== $this->selectedPatientName) {
             $this->selectedPatientId = null;
             $this->selectedPatientName = '';
+            $this->selectedPatient = null; // Clear the full patient object
         }
     }
 
@@ -96,6 +98,7 @@ class Add extends Component
     {
         $this->selectedPatientId = $patientId;
         $this->selectedPatientName = $patientName;
+        $this->selectedPatient = Patient::find($patientId); // Load full patient data
         $this->search = $patientName;
         $this->showDropdown = false;
         $this->results = [];
@@ -103,7 +106,8 @@ class Add extends Component
         // Emit event for parent components
         $this->dispatch('patientSelected', [
             'id' => $patientId,
-            'name' => $patientName
+            'name' => $patientName,
+            'patient' => $this->selectedPatient
         ]);
     }
 
@@ -111,6 +115,7 @@ class Add extends Component
     {
         $this->selectedPatientId = null;
         $this->selectedPatientName = '';
+        $this->selectedPatient = null; // Clear the full patient object
         $this->search = '';
         $this->showDropdown = false;
         $this->results = [];
