@@ -34,7 +34,7 @@
         <div>
             <button wire:click="exportToExcel" class="bg-blue-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-600 transition duration-300">Export all patients to Excel</button>
 
-            <flux:modal.trigger name="add-patient" class="ml-4">
+            <flux:modal.trigger name="add-patient" class="ml-4" >
                 <flux:button variant="primary" color="emerald" icon="message-circle-plus">Add Patient</flux:button>
             </flux:modal.trigger>
         </div>
@@ -44,7 +44,7 @@
 
 
 
-    <flux:modal :dismissible="false" name="add-patient">
+    <flux:modal :dismissible="false" name="add-patient" variant="flyout" :dismissible="false" position="right" class="md:w-[400px]">
         <livewire:patients.add />
     </flux:modal>
 

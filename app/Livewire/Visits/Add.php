@@ -22,19 +22,19 @@ class Add extends Component
     public Patient|null $patient = null;
 
     #[Validate('required|string|max:1000')]
-    public $complaints = 'Complaints:';
+    public string $complaints = 'Complaints:';
 
     #[Validate('nullable|string|max:2000')]
-    public $history_of_presenting_illness = 'History of presenting illness:';
+    public string $history_of_presenting_illness = 'History of presenting illness:';
 
     #[Validate('nullable|string|max:500')]
-    public $allergies = 'Allergies';
+    public string $allergies = 'Allergies';
 
     #[Validate('nullable|string|max:2000')]
     public $physical_examination = 'Physical examination results';
 
     #[Validate('nullable|string|max:1000')]
-    public $lab_test = 'Lab test results';
+    public string $lab_test = 'Lab test results';
 
     #[Validate('nullable|string|max:1000')]
     public $imaging = 'Imaging data';
@@ -65,6 +65,64 @@ class Add extends Component
     // Search properties
     public $search_number = '';
     public $search_name = '';
+
+    public $search = '';
+    public $results = [];
+    public $selectedPatientId = null;
+    public $selectedPatientName = '';
+    public $showDropdown = false;
+
+    public function updatedSearch()
+    {
+        if (strlen($this->search) >= 2) {
+            $this->results = Patient::where('name', 'like', '%' . $this->search . '%')
+                ->orWhere('number', 'like', '%' . $this->search . '%')
+                ->limit(10)
+                ->get();
+            $this->showDropdown = true;
+        } else {
+            $this->results = [];
+            $this->showDropdown = false;
+        }
+
+        // Clear selection if search changes
+        if ($this->search !== $this->selectedPatientName) {
+            $this->selectedPatientId = null;
+            $this->selectedPatientName = '';
+        }
+    }
+
+    public function selectPatient($patientId, $patientName)
+    {
+        $this->selectedPatientId = $patientId;
+        $this->selectedPatientName = $patientName;
+        $this->search = $patientName;
+        $this->showDropdown = false;
+        $this->results = [];
+
+        // Emit event for parent components
+        $this->dispatch('patientSelected', [
+            'id' => $patientId,
+            'name' => $patientName
+        ]);
+    }
+
+    public function clearSelection()
+    {
+        $this->selectedPatientId = null;
+        $this->selectedPatientName = '';
+        $this->search = '';
+        $this->showDropdown = false;
+        $this->results = [];
+
+        $this->dispatch('patientCleared');
+    }
+
+    // Hide dropdown when clicking outside
+    public function hideDropdown()
+    {
+        $this->showDropdown = false;
+    }
 
     // Remove the $patients property since we'll use render() method
     // public $patients = [];

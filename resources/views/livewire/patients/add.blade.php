@@ -1,4 +1,4 @@
-<div class="flex items-center  justify-center">
+<div class="">
     <div class="">
         <!-- Success Message -->
         @if($showSuccessMessage)
@@ -38,97 +38,91 @@
 
             <div class="space-y-6">
                 <!-- Name and Age Row -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div class="md:col-span-2">
-                        <label for="name" class="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-300">
-                              Full Name <span class="text-red-500">*</span>
-                        </label>
-                        <input
-                            wire:model.blur="name"
-                            type="text"
-                            id="name"
-                            placeholder="Enter patient's full name"
-                            class="block w-full px-3 py-2 rounded-lg border border-gray-300 shadow-sm placeholder-gray-400 focus:border-gray-500 focus:ring-1 focus:ring-gray-500 transition-all duration-200 @error('name') border-red-300 focus:border-red-500 focus:ring-red-500 @enderror"
-                        />
-                        @error('name')
-                        <p class="mt-1 text-sm text-red-600 flex items-center">
-                            <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
-                            </svg>
-                            {{ $message }}
-                        </p>
-                        @enderror
-                    </div>
-
-                    <div>
-                        <label for="age" class="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-300">
-                            Age <span class="text-red-500">*</span>
-                        </label>
-                        <input
-                            wire:model.blur="age"
-                            type="number"
-                            id="age"
-                            min="0"
-                            max="120"
-                            placeholder="Age"
-                            class="block w-full px-3 py-2 rounded-lg border border-gray-300 shadow-sm placeholder-gray-400 focus:border-gray-500 focus:ring-1 focus:ring-gray-500 transition-all duration-200 @error('age') border-red-300 focus:border-red-500 focus:ring-red-500 @enderror"
-                        />
-                        @error('age')
-                        <p class="mt-1 text-sm text-red-600 flex items-center">
-                            <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
-                            </svg>
-                            {{ $message }}
-                        </p>
-                        @enderror
-                    </div>
+                <div class="">
+                    <label for="name" class="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-300">
+                        Full Name <span class="text-red-500">*</span>
+                    </label>
+                    <input
+                        wire:model.blur="name"
+                        type="text"
+                        id="name"
+                        placeholder="Enter patient's full name"
+                        class="block w-full px-3 py-2 rounded-lg border border-gray-300 shadow-sm placeholder-gray-400 focus:border-gray-500 focus:ring-1 focus:ring-gray-500 transition-all duration-200 @error('name') border-red-300 focus:border-red-500 focus:ring-red-500 @enderror"
+                    />
+                    @error('name')
+                    <p class="mt-1 text-sm text-red-600 flex items-center">
+                        <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                        </svg>
+                        {{ $message }}
+                    </p>
+                    @enderror
                 </div>
 
-                <!-- Gender and Phone Row -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label for="gender" class="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-300">
-                            Gender <span class="text-red-500">*</span>
-                        </label>
-                        <select
-                            wire:model="gender"
-                            id="gender"
-                            class="block w-full px-3 py-2 rounded-lg border border-gray-300 shadow-sm focus:border-gray-500 focus:ring-1 focus:ring-gray-500 transition-all duration-200 @error('gender') border-red-300 focus:border-red-500 focus:ring-red-500 @enderror"
-                        >
-                            <option value="female">Female</option>
-                            <option value="male">Male</option>
-                            <option value="other">Other</option>
-                        </select>
-                        @error('gender')
-                        <p class="mt-1 text-sm text-red-600 flex items-center">
-                            <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
-                            </svg>
-                            {{ $message }}
-                        </p>
-                        @enderror
-                    </div>
+                <div>
+                    <label for="age" class="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-300">
+                        Age <span class="text-red-500">*</span>
+                    </label>
+                    <input
+                        wire:model.blur="age"
+                        type="number"
+                        id="age"
+                        min="0"
+                        max="120"
+                        placeholder="Age"
+                        class="block w-full px-3 py-2 rounded-lg border border-gray-300 shadow-sm placeholder-gray-400 focus:border-gray-500 focus:ring-1 focus:ring-gray-500 transition-all duration-200 @error('age') border-red-300 focus:border-red-500 focus:ring-red-500 @enderror"
+                    />
+                    @error('age')
+                    <p class="mt-1 text-sm text-red-600 flex items-center">
+                        <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                        </svg>
+                        {{ $message }}
+                    </p>
+                    @enderror
+                </div>
 
-                    <div>
-                        <label for="phone_number" class="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-300">
-                            Phone Number <span class="text-red-500">*</span>
-                        </label>
-                        <input
-                            wire:model.blur="phone_number"
-                            type="tel"
-                            id="phone_number"
-                            placeholder="e.g., +254 700 123 456"
-                            class="block w-full px-3 py-2 rounded-lg border border-gray-300 shadow-sm placeholder-gray-400 focus:border-gray-500 focus:ring-1 focus:ring-gray-500 transition-all duration-200 @error('phone_number') border-red-300 focus:border-red-500 focus:ring-red-500 @enderror"
-                        />
-                        @error('phone_number')
-                        <p class="mt-1 text-sm text-red-600 flex items-center">
-                            <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
-                            </svg>
-                            {{ $message }}
-                        </p>
-                        @enderror
-                    </div>
+                <!-- Gende Row -->
+                <div>
+                    <label for="gender" class="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-300">
+                        Gender <span class="text-red-500">*</span>
+                    </label>
+                    <select
+                        wire:model="gender"
+                        id="gender"
+                        class="block w-full px-3 py-2 rounded-lg border border-gray-300 shadow-sm focus:border-gray-500 focus:ring-1 focus:ring-gray-500 transition-all duration-200 @error('gender') border-red-300 focus:border-red-500 focus:ring-red-500 @enderror"
+                    >
+                        <option value="female">Female</option>
+                        <option value="male">Male</option>
+                        <option value="other">Other</option>
+                    </select>
+                    @error('gender')
+                    <p class="mt-1 text-sm text-red-600 flex items-center">
+                        <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                        </svg>
+                        {{ $message }}
+                    </p>
+                    @enderror
+                </div>
+
+                <!-- Gender -->
+
+                <div>
+                    <label for="phone_number" class="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-300">
+                        Phone Number <span class="text-red-500">*</span>
+                    </label>
+
+                    <flux:input icon:trailing="credit-card" mask="(999) 999-9999" wire:model.blur="phone_number"  placeholder="0711xxxxxx"/>
+
+                    @error('phone_number')
+                    <p class="mt-1 text-sm text-red-600 flex items-center">
+                        <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                        </svg>
+                        {{ $message }}
+                    </p>
+                    @enderror
                 </div>
 
                 <!-- Location -->
@@ -136,13 +130,9 @@
                     <label for="location" class="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-300">
                         Location/Address <span class="text-red-500">*</span>
                     </label>
-                    <input
-                        wire:model.blur="location"
-                        type="text"
-                        id="location"
-                        placeholder="Enter patient's address or location"
-                        class="block w-full px-3 py-2 rounded-lg border border-gray-300 shadow-sm placeholder-gray-400 focus:border-gray-500 focus:ring-1 focus:ring-gray-500 transition-all duration-200 @error('location') border-red-300 focus:border-red-500 focus:ring-red-500 @enderror"
-                    />
+
+                    <flux:input mask="(999) 999-9999" wire:model.blur="location"  placeholder="Enter patient's address or location"/>
+
                     @error('location')
                     <p class="mt-1 text-sm text-red-600 flex items-center">
                         <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">

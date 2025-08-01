@@ -30,160 +30,254 @@
 
         <!-- Clear Button -->
         <div class="mt-4">
-            <button
-                wire:click="clearSearch"
-                class="text-blue-600 dark:text-blue-400 hover:text-blue-500 dark:hover:text-blue-300 text-sm font-medium"
-            >
-                Clear
-            </button>
+            <flux:button wire:click="clearSearch" variant="primary" color="zinc" icon="circle-x">Clear</flux:button>
+
+            <flux:modal.trigger name="add-visit">
+                <flux:button variant="primary" color="sky" icon="user-plus">Add Visit</flux:button>
+            </flux:modal.trigger>
         </div>
     </div>
 
-    @isset($patient)
-        <flux:modal name="add-visit" variant="flyout" :dismissible="false" position="left" class="md:w-[900px]">
-            <div class="space-y-6">
-                <div>
-                    <flux:heading size="lg">Add Visit for {{$patient->name}}</flux:heading>
-                    <flux:text class="mt-2">Fill in the visit details below.</flux:text>
-                </div>
+    <flux:modal name="add-visit" variant="flyout" :dismissible="false" position="right" class="md:w-[900px]">
+        <div class="space-y-6">
+            <div>
+                <flux:heading size="lg">Add Visit</flux:heading>
+                <flux:text class="mt-2">Fill in the visit details below.</flux:text>
+            </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <!-- Complaints full width -->
-                    <div class="md:col-span-3">
-                        <flux:field>
-                            <flux:label>Complaints</flux:label>
-                            <flux:textarea
-                                placeholder="Describe complaints"
-                                name="complaints"
-                                wire:model.defer="complaints"
-                            />
-                            <flux:description>Patient's complaints during the visit.</flux:description>
-                            <flux:error name="complaints" />
-                        </flux:field>
+            <div class="relative" x-data="{ open: @entangle('showDropdown') }" @click.outside="$wire.hideDropdown()">
+                <flux:field>
+                    <flux:label>Patient</flux:label>
+                    <flux:description>Search and select a patient by name or number.</flux:description>
+
+                    <div class="relative">
+                        <flux:input
+                            wire:model.live="search"
+                            placeholder="Type patient name or number..."
+                            autocomplete="off"
+                        />
+
+                        {{-- Clear button --}}
+                        @if($selectedPatientId)
+                            <button
+                                type="button"
+                                wire:click="clearSelection"
+                                class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                            >
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
+                            </button>
+                        @endif
                     </div>
 
-                    <!-- History of Presenting Illness -->
-                    <flux:field>
-                        <flux:label>History of Presenting Illness</flux:label>
-                        <flux:textarea
-                            placeholder="History details"
-                            name="history_of_presenting_illness"
-                            wire:model.defer="history_of_presenting_illness"
-                        />
-                        <flux:description>Relevant history for diagnosis.</flux:description>
-                        <flux:error name="history_of_presenting_illness" />
-                    </flux:field>
+                    <flux:error name="selectedPatientId"/>
+                </flux:field>
 
-                    <!-- Allergies -->
-                    <flux:field>
-                        <flux:label>Allergies</flux:label>
-                        <flux:textarea
-                            placeholder="List allergies"
-                            name="allergies"
-                            wire:model.defer="allergies"
-                        />
-                        <flux:description>Known allergies of the patient.</flux:description>
-                        <flux:error name="allergies" />
-                    </flux:field>
+                {{-- Dropdown Results --}}
+                @if($showDropdown && count($results) > 0)
+                    <div class="absolute z-50 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+                        @foreach($results as $patient)
+                            <div
+                                wire:click="selectPatient({{ $patient->id }}, '{{ $patient->name }}')"
+                                class="px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100 last:border-b-0 transition-colors duration-150"
+                            >
+                                <div class="flex justify-between items-start">
+                                    <div class="flex-1">
+                                        <div class="font-medium text-gray-900">{{ $patient->name }}</div>
+                                        <div class="text-sm text-gray-600">
+                                            Patient #: {{ $patient->number }}
+                                        </div>
+                                        <div class="text-sm text-gray-500">
+                                            {{ $patient->age }} years • {{ ucfirst($patient->gender) }} • {{ $patient->phone_number }}
+                                        </div>
+                                    </div>
+                                    <div class="text-xs text-gray-400 ml-2">
+                                        {{ $patient->residence }}
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                @endif
 
-                    <!-- Physical Examination -->
-                    <flux:field>
-                        <flux:label>Physical Examination</flux:label>
-                        <flux:textarea
-                            placeholder="Physical exam notes"
-                            name="physical_examination"
-                            wire:model.defer="physical_examination"
-                        />
-                        <flux:description>Findings from the physical examination.</flux:description>
-                        <flux:error name="physical_examination" />
-                    </flux:field>
-
-                    <!-- Lab Test And Results -->
-                    <flux:field>
-                        <flux:label>Lab Test And Results</flux:label>
-                        <flux:textarea
-                            placeholder="Lab test details"
-                            name="lab_test"
-                            wire:model.defer="lab_test"
-                        />
-                        <flux:description>Laboratory tests ordered or results.</flux:description>
-                        <flux:error name="lab_test" />
-                    </flux:field>
-
-                    <!-- Diagnosis -->
-                    <flux:field>
-                        <flux:label>Diagnosis</flux:label>
-                        <flux:textarea
-                            placeholder="Diagnosis notes"
-                            name="diagnosis"
-                            wire:model.defer="diagnosis"
-                        />
-                        <flux:description>Doctor's diagnosis.</flux:description>
-                        <flux:error name="diagnosis" />
-                    </flux:field>
-
-                    <!-- Type of Diagnosis -->
-                    <flux:field>
-                        <flux:label>Select the type of Diagnosis</flux:label>
-                        <div class="space-y-1">
-                            <flux:radio
-                                name="type_of_diagnosis"
-                                value="infection"
-                                label="Infection"
-                                wire:model.defer="type_of_diagnosis"
-                            />
-                            <flux:radio
-                                name="type_of_diagnosis"
-                                value="short_term"
-                                label="Short Term"
-                                wire:model.defer="type_of_diagnosis"
-                            />
-                            <flux:radio
-                                name="type_of_diagnosis"
-                                value="chronic"
-                                label="Chronic"
-                                wire:model.defer="type_of_diagnosis"
-                            />
+                {{-- No Results Message --}}
+                @if($showDropdown && strlen($search) >= 2 && count($results) == 0)
+                    <div class="absolute z-50 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg">
+                        <div class="px-4 py-3 text-gray-500 text-center">
+                            <div class="flex items-center justify-center">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                </svg>
+                                No patients found for "{{ $search }}"
+                            </div>
                         </div>
-                        <flux:error name="type_of_diagnosis" />
+                    </div>
+                @endif
+
+                {{-- Selected Patient Display --}}
+                @if($selectedPatientId)
+                    <div class="mt-3 p-3 bg-green-50 border border-green-200 rounded-lg">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <svg class="w-5 h-5 text-green-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                <span class="text-sm font-medium text-green-800">
+                        Selected: {{ $selectedPatientName }}
+                    </span>
+                            </div>
+                            <button
+                                type="button"
+                                wire:click="clearSelection"
+                                class="text-green-600 hover:text-green-800 text-sm"
+                            >
+                                Change
+                            </button>
+                        </div>
+                    </div>
+                @endif
+
+                {{-- Hidden input to store selected patient ID for form submission --}}
+                <input type="hidden" name="patient_id" value="{{ $selectedPatientId }}">
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Complaints full width -->
+                <div class="md:col-span-3">
+                    <flux:field>
+                        <flux:label>Complaints</flux:label>
+                        <flux:textarea
+                            placeholder="Describe complaints"
+                            name="complaints"
+                            wire:model.defer="complaints"
+                        />
+                        <flux:description>Patient's complaints during the visit.</flux:description>
+                        <flux:error name="complaints" />
                     </flux:field>
-
-                    <!-- Imaging full width -->
-                    <div class="md:col-span-3">
-                        <flux:field>
-                            <flux:label>Imaging</flux:label>
-                            <flux:textarea
-                                placeholder="Imaging results"
-                                name="imaging"
-                                wire:model.defer="imaging"
-                            />
-                            <flux:description>Imaging studies and results.</flux:description>
-                            <flux:error name="imaging" />
-                        </flux:field>
-                    </div>
-
-                    <!-- Prescriptions full width -->
-                    <div class="md:col-span-3">
-                        <flux:field>
-                            <flux:label>Prescriptions</flux:label>
-                            <flux:textarea
-                                placeholder="Prescribed medications"
-                                name="prescriptions"
-                                wire:model.defer="prescriptions"
-                            />
-                            <flux:description>Medications prescribed during visit.</flux:description>
-                            <flux:error name="prescriptions" />
-                        </flux:field>
-                    </div>
                 </div>
 
-                <div class="flex">
-                    <flux:spacer />
-                    <flux:button type="submit" variant="primary" wire:click="saveVisit">Save visit</flux:button>
+                <!-- History of Presenting Illness -->
+                <flux:field>
+                    <flux:label>History of Presenting Illness</flux:label>
+                    <flux:textarea
+                        placeholder="History details"
+                        name="history_of_presenting_illness"
+                        wire:model.defer="history_of_presenting_illness"
+                    />
+                    <flux:description>Relevant history for diagnosis.</flux:description>
+                    <flux:error name="history_of_presenting_illness" />
+                </flux:field>
+
+                <!-- Allergies -->
+                <flux:field>
+                    <flux:label>Allergies</flux:label>
+                    <flux:textarea
+                        placeholder="List allergies"
+                        name="allergies"
+                        wire:model.defer="allergies"
+                    />
+                    <flux:description>Known allergies of the patient.</flux:description>
+                    <flux:error name="allergies" />
+                </flux:field>
+
+                <!-- Physical Examination -->
+                <flux:field>
+                    <flux:label>Physical Examination</flux:label>
+                    <flux:textarea
+                        placeholder="Physical exam notes"
+                        name="physical_examination"
+                        wire:model.defer="physical_examination"
+                    />
+                    <flux:description>Findings from the physical examination.</flux:description>
+                    <flux:error name="physical_examination" />
+                </flux:field>
+
+                <!-- Lab Test And Results -->
+                <flux:field>
+                    <flux:label>Lab Test And Results</flux:label>
+                    <flux:textarea
+                        placeholder="Lab test details"
+                        name="lab_test"
+                        wire:model.defer="lab_test"
+                    />
+                    <flux:description>Laboratory tests ordered or results.</flux:description>
+                    <flux:error name="lab_test" />
+                </flux:field>
+
+                <!-- Diagnosis -->
+                <flux:field>
+                    <flux:label>Diagnosis</flux:label>
+                    <flux:textarea
+                        placeholder="Diagnosis notes"
+                        name="diagnosis"
+                        wire:model.defer="diagnosis"
+                    />
+                    <flux:description>Doctor's diagnosis.</flux:description>
+                    <flux:error name="diagnosis" />
+                </flux:field>
+
+                <!-- Type of Diagnosis -->
+                <flux:field>
+                    <flux:label>Select the type of Diagnosis</flux:label>
+                    <div class="space-y-1">
+                        <flux:radio
+                            name="type_of_diagnosis"
+                            value="infection"
+                            label="Infection"
+{{--                            wire:model.defer="type_of_diagnosis"--}}
+                        />
+                        <flux:radio
+                            name="type_of_diagnosis"
+                            value="short_term"
+                            label="Short Term"
+{{--                            wire:model.defer="type_of_diagnosis"--}}
+                        />
+                        <flux:radio
+                            name="type_of_diagnosis"
+                            value="chronic"
+                            label="Chronic"
+{{--                            wire:model.defer="type_of_diagnosis"--}}
+                        />
+                    </div>
+                    <flux:error name="type_of_diagnosis" />
+                </flux:field>
+
+                <!-- Imaging full width -->
+                <div class="md:col-span-3">
+                    <flux:field>
+                        <flux:label>Imaging</flux:label>
+                        <flux:textarea
+                            placeholder="Imaging results"
+                            name="imaging"
+                            wire:model.defer="imaging"
+                        />
+                        <flux:description>Imaging studies and results.</flux:description>
+                        <flux:error name="imaging" />
+                    </flux:field>
+                </div>
+
+                <!-- Prescriptions full width -->
+                <div class="md:col-span-3">
+                    <flux:field>
+                        <flux:label>Prescriptions</flux:label>
+                        <flux:textarea
+                            placeholder="Prescribed medications"
+                            name="prescriptions"
+                            wire:model.defer="prescriptions"
+                        />
+                        <flux:description>Medications prescribed during visit.</flux:description>
+                        <flux:error name="prescriptions" />
+                    </flux:field>
                 </div>
             </div>
-        </flux:modal>
-    @endisset
+
+            <div class="flex">
+                <flux:spacer />
+                <flux:button type="submit" variant="primary" wire:click="saveVisit">Save visit</flux:button>
+            </div>
+        </div>
+    </flux:modal>
 
 
 
@@ -216,9 +310,6 @@
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider border-r border-gray-200 dark:border-gray-600">
                         Residence
                     </th>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                        Action
-                    </th>
                 </tr>
                 </thead>
                 <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
@@ -241,11 +332,6 @@
                         </td>
                         <td class="px-6 py-3 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400 border-r border-gray-200 dark:border-gray-600">
                             {{ $patient->residence ?? 'N/A' }}
-                        </td>
-                        <td class="px-6 py-3 whitespace-nowrap text-sm font-medium space-x-2">
-                            <flux:modal.trigger name="add-visit">
-                                <flux:button wire:click="setModal({{$patient}})" variant="primary" color="sky" icon="user-plus">Add Visit</flux:button>
-                            </flux:modal.trigger>
                         </td>
                     </tr>
                 @empty
