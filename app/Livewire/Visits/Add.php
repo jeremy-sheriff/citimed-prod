@@ -43,7 +43,7 @@ class Add extends Component
     public $diagnosis = 'Homa';
 
     #[Validate('required|in:chronic,infection,short_term')]
-    public $type_of_diagnosis = 'short_term';
+    public $type_of_diagnosis = '';
 
     #[Validate('nullable|string|max:2000')]
     public $prescriptions = 'Kulala';
@@ -252,14 +252,16 @@ class Add extends Component
 
     public function saveVisit()
     {
+
+
         $this->validate();
 
-
+        $patient_id = $this->selectedPatientId;
 
         try {
             // Create the visit
             $visit = Visit::query()->create([
-                'patient_id' => $this->patient_id,
+                'patient_id' => $patient_id,
                 'complaints' => $this->complaints,
                 'history_of_presenting_illness' => $this->history_of_presenting_illness,
                 'allergies' => $this->allergies,

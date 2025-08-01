@@ -131,7 +131,7 @@
                         Location/Address <span class="text-red-500">*</span>
                     </label>
 
-                    <flux:input mask="(999) 999-9999" wire:model.blur="location"  placeholder="Enter patient's address or location"/>
+                    <flux:input  wire:model.blur="location"  placeholder="Enter patient's address or location"/>
 
                     @error('location')
                     <p class="mt-1 text-sm text-red-600 flex items-center">

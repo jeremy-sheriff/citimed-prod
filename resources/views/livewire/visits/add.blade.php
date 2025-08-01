@@ -8,7 +8,7 @@
                 <flux:field>
                     <flux:label>Patient Number</flux:label>
                     <flux:description>Enter the patient's number.</flux:description>
-                    <flux:input wire:model="search_number" type="text" name="username" placeholder="Enter the patient's number" />
+                    <flux:input autocomplete="off" wire:model="search_number" type="text" name="username" placeholder="Enter the patient's number" />
                     <flux:error name="search_number" />
                 </flux:field>
 
@@ -20,7 +20,7 @@
                 <flux:field>
                     <flux:label>Patient Name</flux:label>
                     <flux:description>Enter the patient's name.</flux:description>
-                    <flux:input wire:model="search_name" type="text"  name="search_name" id="search_name" placeholder="Search by Patient Name" />
+                    <flux:input autocomplete="off" wire:model="search_name" type="text"  name="search_name" id="search_name" placeholder="Search by Patient Name" />
                     <flux:error name="search_name" />
                 </flux:field>
 
@@ -217,31 +217,13 @@
                     <flux:error name="diagnosis" />
                 </flux:field>
 
+
                 <!-- Type of Diagnosis -->
-                <flux:field>
-                    <flux:label>Select the type of Diagnosis</flux:label>
-                    <div class="space-y-1">
-                        <flux:radio
-                            name="type_of_diagnosis"
-                            value="infection"
-                            label="Infection"
-{{--                            wire:model.defer="type_of_diagnosis"--}}
-                        />
-                        <flux:radio
-                            name="type_of_diagnosis"
-                            value="short_term"
-                            label="Short Term"
-{{--                            wire:model.defer="type_of_diagnosis"--}}
-                        />
-                        <flux:radio
-                            name="type_of_diagnosis"
-                            value="chronic"
-                            label="Chronic"
-{{--                            wire:model.defer="type_of_diagnosis"--}}
-                        />
-                    </div>
-                    <flux:error name="type_of_diagnosis" />
-                </flux:field>
+                <flux:radio.group wire:model="type_of_diagnosis" label="Select type of diagnosis">
+                    <flux:radio value="infection" label="Infection" checked />
+                    <flux:radio value="short_term" label="Short term" />
+                    <flux:radio value="chronic" label="Chronic" />
+                </flux:radio.group>
 
                 <!-- Imaging full width -->
                 <div class="md:col-span-3">
