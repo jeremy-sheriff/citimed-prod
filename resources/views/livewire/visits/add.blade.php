@@ -340,7 +340,7 @@
 
 
                 {{-- Type of Diagnosis (Radio Button Group) --}}
-                <flux:radio.group wire:model="type_of_diagnosis" label="Select type of diagnosis"> <span class='required-asterisk'>*</span>
+                <flux:radio.group wire:model="type_of_diagnosis" label="Select type of diagnosis ">
                     <flux:radio value="infection" label="Infection" checked />
                     <flux:radio value="short_term" label="Short term" />
                     <flux:radio value="chronic" label="Chronic" />
