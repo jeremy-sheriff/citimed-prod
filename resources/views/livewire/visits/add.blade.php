@@ -46,7 +46,6 @@
             <div class="relative" x-data="{ open: @entangle('showDropdown') }" @click.outside="$wire.hideDropdown()">
                 <flux:field>
                     <flux:label>Patient <span class="required-asterisk">*</span></flux:label>
-                    <flux:description>Search and select a patient by name or number.</flux:description>
 
                     <div class="relative">
                         <flux:input
@@ -279,7 +278,6 @@
                                         name="complaints"
                                         wire:model.defer="complaints"
                                     />
-                                    <flux:description>Patient's complaints during the visit.</flux:description>
                                     <flux:error name="complaints" />
                                 </flux:field>
                             </div>
@@ -294,7 +292,6 @@
                                     name="diagnosis"
                                     wire:model.defer="diagnosis"
                                 />
-                                <flux:description>Doctor's diagnosis.</flux:description>
                                 <flux:error name="diagnosis" />
                             </flux:field>
                         </div>
@@ -310,7 +307,6 @@
                                 name="history_of_presenting_illness"
                                 wire:model.defer="history_of_presenting_illness"
                             />
-                            <flux:description>Relevant history for diagnosis.</flux:description>
                             <flux:error name="history_of_presenting_illness" />
                         </flux:field>
 
@@ -323,7 +319,6 @@
                                 name="allergies"
                                 wire:model.defer="allergies"
                             />
-                            <flux:description>Known allergies of the patient.</flux:description>
                             <flux:error name="allergies" />
                         </flux:field>
 
@@ -336,7 +331,6 @@
                                 name="physical_examination"
                                 wire:model.defer="physical_examination"
                             />
-                            <flux:description>Findings from the physical examination.</flux:description>
                             <flux:error name="physical_examination" />
                         </flux:field>
 
@@ -349,7 +343,6 @@
                                 name="lab_test"
                                 wire:model.defer="lab_test"
                             />
-                            <flux:description>Laboratory tests ordered or results.</flux:description>
                             <flux:error name="lab_test" />
                         </flux:field>
 
@@ -374,7 +367,6 @@
                                     name="imaging"
                                     wire:model.defer="imaging"
                                 />
-                                <flux:description>Imaging studies and results.</flux:description>
                                 <flux:error name="imaging" />
                             </flux:field>
                         </div>
@@ -389,7 +381,6 @@
                                     name="prescriptions"
                                     wire:model.defer="prescriptions"
                                 />
-                                <flux:description>Medications prescribed during visit.</flux:description>
                                 <flux:error name="prescriptions" />
                             </flux:field>
                         </div>
@@ -419,7 +410,6 @@
                                     <flux:select.option>Mpesa</flux:select.option>
                                     <flux:select.option>Cash</flux:select.option>
                                 </flux:select>
-                                <flux:description>Select the payment method used.</flux:description>
                                 <flux:error name="mode_of_payment" />
                             </flux:field>
                         </div>
@@ -464,7 +454,6 @@
                                             wire:model="calculated_balance"
                                             disabled="disabled"
                                             class="bg-gray-100" />
-                                <flux:description>Automatically calculated balance for next visit.</flux:description>
                                 <flux:error name="calculated_balance" />
                             </flux:field>
                         </div>
