@@ -345,6 +345,8 @@ class Add extends Component
                 'prescriptions' => $this->prescriptions,
             ]);
 
+            $this->dispatch('visit-created');
+
             // Create the payment
             $payment = Payment::create([
                 'visit_id' => $visit->id,
@@ -376,11 +378,12 @@ class Add extends Component
             // Reset form
             $this->resetForm();
 
+
             session()->flash('success', 'Visit created successfully!');
 
             // Close modal and redirect
             $this->dispatch('close-modal', 'add-visit');
-            return redirect()->route('visits.index');
+//            return redirect()->route('visits.index');
 
         } catch (\Exception $e) {
             session()->flash('error', 'An error occurred while creating the visit. Please try again.');
