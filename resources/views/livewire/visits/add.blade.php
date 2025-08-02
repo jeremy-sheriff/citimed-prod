@@ -34,7 +34,7 @@
             --}}
             <div class="relative" x-data="{ open: @entangle('showDropdown') }" @click.outside="$wire.hideDropdown()">
                 <flux:field>
-                    <flux:label>Patient *</flux:label>
+                    <flux:label>Patient <span class="required-asterisk">*</span></flux:label>
                     <flux:description>Search and select a patient by name or number.</flux:description>
 
                     <div class="relative">
@@ -249,7 +249,7 @@
                 {{-- Complaints (full width) --}}
                 <div class="md:col-span-3">
                     <flux:field>
-                        <flux:label>Complaints *</flux:label>
+                        <flux:label>Complaints <span class="required-asterisk">*</span></flux:label>
                         <flux:textarea
                             placeholder="Describe complaints"
                             name="complaints"
@@ -310,7 +310,7 @@
 
                 {{-- Diagnosis --}}
                 <flux:field>
-                    <flux:label>Diagnosis *</flux:label>
+                    <flux:label>Diagnosis <span class="required-asterisk">*</span></flux:label>
                     <flux:textarea
                         placeholder="Diagnosis notes"
                         name="diagnosis"
@@ -321,7 +321,7 @@
                 </flux:field>
 
                 {{-- Type of Diagnosis (Radio Button Group) --}}
-                <flux:radio.group wire:model="type_of_diagnosis" label="Select type of diagnosis *">
+                <flux:radio.group wire:model="type_of_diagnosis" label="Select type of diagnosis <span class='required-asterisk'>*</span>">
                     <flux:radio value="infection" label="Infection" checked />
                     <flux:radio value="short_term" label="Short term" />
                     <flux:radio value="chronic" label="Chronic" />
