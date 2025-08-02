@@ -64,10 +64,10 @@ class Add extends Component
      * Financial Information Properties
      */
     #[Validate('required|numeric|min:0')]
-    public $amount_charged = 0;
+    public $amount_charged = null;
 
     #[Validate('required|numeric|min:0')]
-    public $amount_paid = 0;
+    public $amount_paid = null;
 
     #[Validate('required|in:cash,mpesa,bank_transfer,insurance')]
     public $mode_of_payment = 'cash';
@@ -151,6 +151,7 @@ class Add extends Component
             $this->selectedPatientName = '';
             $this->selectedPatient = null;
             $this->previous_balance = 0;
+            $this->previous_balance_id = null;
             $this->calculateBalance();
         }
     }
@@ -170,7 +171,10 @@ class Add extends Component
         $this->showDropdown = false;
         $this->results = [];
 
-        // Update previous balance when patient is selected
+        // Get and set the previous balance for this patient
+        $this->previous_balance = $this->getPreviousBalance($patientId);
+
+        // Update calculated balance
         $this->calculateBalance();
 
         // Emit event for parent components
@@ -193,6 +197,7 @@ class Add extends Component
         $this->showDropdown = false;
         $this->results = [];
         $this->previous_balance = 0;
+        $this->previous_balance_id = null;
         $this->calculateBalance();
 
         $this->dispatch('patientCleared');
@@ -262,8 +267,16 @@ class Add extends Component
      */
     public function calculateBalance()
     {
-        $total_due = $this->previous_balance + $this->amount_charged;
-        $this->calculated_balance = $total_due - $this->amount_paid;
+        // Convert empty strings, null values, or non-numeric values to 0
+        $previous_balance = is_numeric($this->previous_balance) ? (float)$this->previous_balance : 0;
+        $amount_charged = is_numeric($this->amount_charged) ? (float)$this->amount_charged : 0;
+        $amount_paid = is_numeric($this->amount_paid) ? (float)$this->amount_paid : 0;
+
+        $total_due = $previous_balance + $amount_charged;
+        $calculated_balance = $total_due - $amount_paid;
+
+        // If amount paid is greater than total due, set balance to zero (no excess payments)
+        $this->calculated_balance = max(0, $calculated_balance);
     }
 
     /**
@@ -327,9 +340,6 @@ class Add extends Component
             return;
         }
 
-
-
-
         try {
             // Create the visit
             $visit = Visit::create([
@@ -357,27 +367,25 @@ class Add extends Component
             ]);
 
             // Handle balance logic
-            $next_balance = abs($this->amount_paid - ($this->previous_balance + $this->amount_charged));
+            $total_due = $this->previous_balance + $this->amount_charged;
+            $next_balance = max(0, $total_due - $this->amount_paid); // Ensure balance never goes below 0
 
-            if ($next_balance >= 0) {
-                // Mark the previous balance as carried forward if exists
-                if ($this->previous_balance > 0 && $this->previous_balance_id) {
-                    Balance::find($this->previous_balance_id)->update([
-                        'status' => 'carried_foward'
-                    ]);
-                }
-
-                // Create a new balance record
-                Balance::create([
-                    'payment_id' => $payment->id,
-                    'amount' => $next_balance,
-                    'status' => ($next_balance === 0) ? 'cleared' : 'not_cleared',
+            // Mark the previous balance as carried forward if exists
+            if ($this->previous_balance > 0 && $this->previous_balance_id) {
+                Balance::find($this->previous_balance_id)->update([
+                    'status' => 'carried_foward'
                 ]);
             }
 
+            // Create a new balance record
+            Balance::create([
+                'payment_id' => $payment->id,
+                'amount' => $next_balance,
+                'status' => ($next_balance === 0) ? 'cleared' : 'not_cleared',
+            ]);
+
             // Reset form
             $this->resetForm();
-
 
             session()->flash('success', 'Visit created successfully!');
 
@@ -410,10 +418,15 @@ class Add extends Component
 
         // Reset other properties
         $this->previous_balance = 0;
+        $this->previous_balance_id = null;
         $this->calculated_balance = 0;
         $this->selected_patient = null;
         $this->type_of_diagnosis = 'infection';
         $this->mode_of_payment = 'cash';
+
+        // Set financial fields to null for clean inputs
+        $this->amount_charged = null;
+        $this->amount_paid = null;
     }
 
     /**

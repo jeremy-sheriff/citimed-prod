@@ -44,7 +44,7 @@
 
 
 
-    <flux:modal :dismissible="false" name="add-patient" variant="flyout" :dismissible="false" position="right" class="md:w-[400px]">
+    <flux:modal :dismissible="false"  name="add-patient" variant="flyout" :dismissible="false" position="right" class="md:w-[400px]">
         <livewire:patients.add />
     </flux:modal>
 

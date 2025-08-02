@@ -18,6 +18,9 @@ class Add extends Component
     #[Validate('required|in:Male,Female,Other')]
     public string $gender = 'female';
 
+    #[Validate('required|in:Mpesa,Cash,Other')]
+    public string $mode_of_payment = '';
+
     #[Validate('required|string|max:20|unique:patients,phone_number')]
     public string $phone_number = '';
 

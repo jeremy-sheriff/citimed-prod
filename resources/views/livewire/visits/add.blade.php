@@ -385,10 +385,73 @@
                 </div>
             </div>
 
+
+
+            <flux:separator />
+
+            <div class="flex flex-col md:flex-row gap-6">
+                {{-- Mode  of  Payment --}}
+                <div class="w-1/2 mt-5">
+                    <flux:select wire:model="mode_of_payment" placeholder="Choose mode of payment">
+                        <flux:select.option>Mpesa</flux:select.option>
+                        <flux:select.option>Cash</flux:select.option>
+                    </flux:select>
+                </div>
+
+
+                {{-- Right Side --}}
+                <div class="w-1/2">
+
+                    <div class="flex flex-col md:flex-row gap-6">
+
+                        <div class="w-1/2">
+                            <flux:field>
+                                <flux:label>Previous Visit Balance</flux:label>
+                                <flux:input type="number" wire:model="previous_balance" disabled="disabled"/>
+                                <flux:error name="previous_balance" />
+                            </flux:field>
+                        </div>
+                        <div class="w-1/2">
+                            <flux:field>
+                                <flux:label>Amount Charged</flux:label>
+                                <flux:input type="number"
+                                            wire:model.live="amount_charged"
+                                            placeholder="Enter amount charged" />
+                                <flux:error name="amount_charged"  />
+                            </flux:field>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col md:flex-row gap-6 mt-5">
+
+                        <div class="w-1/2">
+                            <flux:field>
+                                <flux:label>Amount Paid</flux:label>
+                                <flux:input type="number"
+                                            wire:model.live="amount_paid"
+                                            placeholder="Enter amount paid"/>
+                                <flux:error name="amount_paid" />
+                            </flux:field>
+                        </div>
+                        <div class="w-1/2">
+                            <flux:field>
+                                <flux:label>Next Visit Balance</flux:label>
+                                <flux:input type="number"
+                                            wire:model="calculated_balance"
+                                            disabled="disabled"
+                                            class="bg-gray-100" />
+                                <flux:error name="calculated_balance" />
+                            </flux:field>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             {{-- Form Submit Button --}}
             <div class="flex">
                 <flux:spacer />
                 <flux:button
+                    icon="user-plus"
                     type="submit"
                     variant="primary"
                     wire:click="saveVisit"
