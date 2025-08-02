@@ -4,6 +4,18 @@
 --}}
 <div class="w-full mx-auto px-4 sm:px-6 lg:px-8">
 
+    {{-- Flash Message for Success --}}
+    @if (session()->has('success'))
+        <div class="p-4 mb-4 text-green-700 bg-green-100 border border-green-300 rounded-lg shadow-sm">
+            <div class="flex items-center">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+                {{ session('success') }}
+            </div>
+        </div>
+    @endif
+
     {{--
         SECTION: Patient Search Panel
         This section provides search functionality to find patients by number or name
@@ -21,7 +33,6 @@
         </flux:modal.trigger>
     </div>
 
-    Here
     {{--
         SECTION: Add Visit Modal
         This modal contains the form for adding a new patient visit
