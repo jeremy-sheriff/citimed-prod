@@ -264,6 +264,7 @@
                         <flux:field>
                             <flux:label>Complaints <span class="required-asterisk">*</span></flux:label>
                             <flux:textarea
+                                rows="auto"
                                 placeholder="Describe complaints"
                                 name="complaints"
                                 wire:model.defer="complaints"
@@ -278,6 +279,7 @@
                     <flux:field>
                         <flux:label>Diagnosis <span class="required-asterisk">*</span></flux:label>
                         <flux:textarea
+                            rows="auto"
                             placeholder="Diagnosis notes"
                             name="diagnosis"
                             wire:model.defer="diagnosis"
@@ -293,6 +295,7 @@
                 <flux:field>
                     <flux:label>History of Presenting Illness (optional)</flux:label>
                     <flux:textarea
+                        rows="auto"
                         placeholder="History details"
                         name="history_of_presenting_illness"
                         wire:model.defer="history_of_presenting_illness"
@@ -305,6 +308,7 @@
                 <flux:field>
                     <flux:label>Allergies (optional)</flux:label>
                     <flux:textarea
+                        rows="auto"
                         placeholder="List allergies"
                         name="allergies"
                         wire:model.defer="allergies"
@@ -317,6 +321,7 @@
                 <flux:field>
                     <flux:label>Physical Examination (optional)</flux:label>
                     <flux:textarea
+                        rows="auto"
                         placeholder="Physical exam notes"
                         name="physical_examination"
                         wire:model.defer="physical_examination"
@@ -329,6 +334,7 @@
                 <flux:field>
                     <flux:label>Lab Test And Results (optional)</flux:label>
                     <flux:textarea
+                        rows="auto"
                         placeholder="Lab test details"
                         name="lab_test"
                         wire:model.defer="lab_test"
@@ -353,6 +359,7 @@
                     <flux:field>
                         <flux:label>Imaging (optional)</flux:label>
                         <flux:textarea
+                            rows="auto"
                             placeholder="Imaging results"
                             name="imaging"
                             wire:model.defer="imaging"
@@ -367,6 +374,7 @@
                     <flux:field>
                         <flux:label>Prescriptions (optional)</flux:label>
                         <flux:textarea
+                            rows="auto"
                             placeholder="Prescribed medications"
                             name="prescriptions"
                             wire:model.defer="prescriptions"
