@@ -29,9 +29,6 @@ class Add extends Component
     /**
      * Patient Information Properties
      */
-    public $patient_id = '';
-    public Patient|null $patient = null;
-    public $selected_patient = null;
 
     /**
      * Visit Medical Information Properties
@@ -82,11 +79,6 @@ class Add extends Component
     /**
      * Patient Search Properties
      */
-    // Table search
-    public $search_number = '';
-    public $search_name = '';
-
-    // Dropdown search
     public $search = '';
     public $results = [];
     public $selectedPatientId = null;
@@ -179,7 +171,6 @@ class Add extends Component
         $this->results = [];
 
         // Update previous balance when patient is selected
-//        $this->previous_balance = $this->getPreviousBalance($patientId);
         $this->calculateBalance();
 
         // Emit event for parent components
@@ -241,78 +232,14 @@ class Add extends Component
      */
     public function setModal(Patient $patient)
     {
-        $this->patient = $patient;
         $this->selectPatient($patient->id, $patient->name);
     }
 
-    /**
-     * TABLE SEARCH AND PAGINATION METHODS
-     */
-
-    /**
-     * Search patients by number and reset pagination
-     */
-    public function searchByNumber()
-    {
-        $this->resetPage();
-    }
-
-    /**
-     * Search patients by name and reset pagination
-     */
-    public function searchByName()
-    {
-        $this->resetPage();
-    }
-
-    /**
-     * Clear all search fields and reset pagination
-     */
-    public function clearSearch()
-    {
-        $this->search_number = '';
-        $this->search_name = '';
-        $this->resetPage();
-    }
-
-    /**
-     * Reset pagination when search number is updated
-     */
-    public function updatedSearchNumber()
-    {
-        $this->resetPage();
-    }
-
-    /**
-     * Reset pagination when search name is updated
-     */
-    public function updatedSearchName()
-    {
-        $this->resetPage();
-    }
 
     /**
      * PATIENT AND FINANCIAL DATA METHODS
      */
 
-    /**
-     * Handle changes to the patient ID
-     * Updates selected patient and calculates previous balance
-     *
-     * @param mixed $value The new patient ID value
-     */
-    public function updatedPatientId($value)
-    {
-        if ($value) {
-            $this->selected_patient = Patient::find($value);
-            $this->previous_balance = $this->getPreviousBalance($value);
-            $this->calculateBalance();
-        } else {
-            $this->selected_patient = null;
-            $this->previous_balance = 0;
-            $this->calculateBalance();
-        }
-    }
 
     /**
      * Recalculate balance when amount charged is updated
@@ -418,8 +345,6 @@ class Add extends Component
                 'prescriptions' => $this->prescriptions,
             ]);
 
-            dd($visit);
-
             // Create the payment
             $payment = Payment::create([
                 'visit_id' => $visit->id,
@@ -495,27 +420,14 @@ class Add extends Component
     /**
      * Render the component
      *
-     * Handles patient filtering based on search criteria and returns the view
-     *
      * @return \Illuminate\View\View The component view
      */
     public function render()
     {
-        // Build query with filters
-        $query = Patient::query();
-
-        if ($this->search_number) {
-            $query->where('number', 'like', '%' . $this->search_number . '%');
-        }
-
-        if ($this->search_name) {
-            $query->where('name', 'like', '%' . $this->search_name . '%');
-        }
-
-        // Get paginated results
-        $patients = $query->orderBy('name')->paginate(15, ['*'], 'patient_page', $this->patient_page ?? 1);
+        // Get paginated results of visits with patient information
+        $visits = Visit::with('patient')->orderBy('created_at', 'desc')->paginate(15);
 
         // Return view with data
-        return view('livewire.visits.add', compact('patients'));
+        return view('livewire.visits.add', compact('visits'));
     }
 }

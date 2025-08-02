@@ -9,82 +9,19 @@
         This section provides search functionality to find patients by number or name
     --}}
     <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6 mb-6">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {{-- Patient Number Search Field --}}
-            <div>
-                <flux:field>
-                    <flux:label>Patient Number</flux:label>
-                    <flux:description>Enter the patient's number.</flux:description>
-                    <flux:input
-                        autocomplete="off"
-                        wire:model="search_number"
-                        type="text"
-                        name="username"
-                        placeholder="Enter the patient's number"
-                    />
-                    <flux:error name="search_number" />
-                </flux:field>
 
-                <flux:button
-                    class="mt-3"
-                    wire:click="searchByNumber"
-                    variant="primary"
-                    color="zinc"
-                >
-                    Search By Number
-                </flux:button>
-            </div>
-
-            {{-- Patient Name Search Field --}}
-            <div>
-                <flux:field>
-                    <flux:label>Patient Name</flux:label>
-                    <flux:description>Enter the patient's name.</flux:description>
-                    <flux:input
-                        autocomplete="off"
-                        wire:model="search_name"
-                        type="text"
-                        name="search_name"
-                        id="search_name"
-                        placeholder="Search by Patient Name"
-                    />
-                    <flux:error name="search_name" />
-                </flux:field>
-
-                <flux:button
-                    class="mt-3"
-                    wire:click="searchByName"
-                    variant="primary"
-                    color="blue"
-                >
-                    Search By Name
-                </flux:button>
-            </div>
-        </div>
-
-        {{-- Action Buttons --}}
-        <div class="mt-4">
+        <flux:modal.trigger name="add-visit">
             <flux:button
-                wire:click="clearSearch"
                 variant="primary"
-                color="zinc"
-                icon="circle-x"
+                color="sky"
+                icon="user-plus"
             >
-                Clear
+                Add Visit
             </flux:button>
-
-            <flux:modal.trigger name="add-visit">
-                <flux:button
-                    variant="primary"
-                    color="sky"
-                    icon="user-plus"
-                >
-                    Add Visit
-                </flux:button>
-            </flux:modal.trigger>
-        </div>
+        </flux:modal.trigger>
     </div>
 
+    Here
     {{--
         SECTION: Add Visit Modal
         This modal contains the form for adding a new patient visit
@@ -436,8 +373,8 @@
     </flux:modal>
 
     {{--
-        SECTION: Patients Table
-        This section displays a table of patients with pagination
+        SECTION: Visits Table
+        This section displays a table of visits with pagination
     --}}
     <div class="bg-white dark:bg-gray-800 shadow rounded-lg overflow-hidden mt-6">
         {{-- Table with horizontal scrolling for small screens --}}
@@ -450,52 +387,56 @@
                         #
                     </th>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider border-r border-gray-200 dark:border-gray-600">
-                        Patient No
+                        Date
                     </th>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider border-r border-gray-200 dark:border-gray-600">
-                        Name
+                        Patient
                     </th>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider border-r border-gray-200 dark:border-gray-600">
-                        Age
+                        Complaints
                     </th>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider border-r border-gray-200 dark:border-gray-600">
-                        Phone
+                        Diagnosis
                     </th>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider border-r border-gray-200 dark:border-gray-600">
-                        Residence
+                        Type
                     </th>
                 </tr>
                 </thead>
 
                 {{-- Table Body --}}
                 <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                @forelse($patients as $index => $patient)
-                    {{-- Patient Row --}}
+                @forelse($visits as $index => $visit)
+                    {{-- Visit Row --}}
                     <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 odd:bg-gray-100 even:bg-white">
                         <td class="px-6 py-3 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400 border-r border-gray-200 dark:border-gray-600">
-                            {{ ($patients->currentPage() - 1) * $patients->perPage() + $index + 1 }}
+                            {{ ($visits->currentPage() - 1) * $visits->perPage() + $index + 1 }}
                         </td>
                         <td class="px-6 py-3 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100 border-r border-gray-200 dark:border-gray-600">
-                            {{ $patient->number ?? 'N/A' }}
+                            {{ $visit->created_at->format('M d, Y') }}
                         </td>
                         <td class="px-6 py-3 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100 border-r border-gray-200 dark:border-gray-600">
-                            {{ ucfirst($patient->name) }}
+                            {{ ucfirst($visit->patient->name ?? 'N/A') }}
+                        </td>
+                        <td class="px-6 py-3 text-sm text-gray-500 dark:text-gray-400 border-r border-gray-200 dark:border-gray-600 max-w-xs truncate">
+                            {{ Str::limit($visit->complaints, 50) }}
+                        </td>
+                        <td class="px-6 py-3 text-sm text-gray-500 dark:text-gray-400 border-r border-gray-200 dark:border-gray-600 max-w-xs truncate">
+                            {{ Str::limit($visit->diagnosis, 50) }}
                         </td>
                         <td class="px-6 py-3 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400 border-r border-gray-200 dark:border-gray-600">
-                            {{ $patient->age ?? 'N/A' }}
-                        </td>
-                        <td class="px-6 py-3 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400 border-r border-gray-200 dark:border-gray-600">
-                            {{ $patient->phone_number ?? 'N/A' }}
-                        </td>
-                        <td class="px-6 py-3 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400 border-r border-gray-200 dark:border-gray-600">
-                            {{ $patient->residence ?? 'N/A' }}
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+                                {{ $visit->type_of_diagnosis == 'chronic' ? 'bg-red-100 text-red-800' :
+                                   ($visit->type_of_diagnosis == 'infection' ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-800') }}">
+                                {{ ucfirst(str_replace('_', ' ', $visit->type_of_diagnosis)) }}
+                            </span>
                         </td>
                     </tr>
                 @empty
-                    {{-- Empty State - No Patients Found --}}
+                    {{-- Empty State - No Visits Found --}}
                     <tr>
-                        <td colspan="7" class="px-6 py-4 text-center text-sm text-gray-500 dark:text-gray-400">
-                            No patients found
+                        <td colspan="6" class="px-6 py-4 text-center text-sm text-gray-500 dark:text-gray-400">
+                            No visits found
                         </td>
                     </tr>
                 @endforelse
@@ -508,7 +449,7 @@
             <div class="flex items-center justify-between">
                 {{-- Mobile Pagination Controls --}}
                 <div class="flex-1 flex justify-between sm:hidden">
-                    @if ($patients->onFirstPage())
+                    @if ($visits->onFirstPage())
                         <span class="relative inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 cursor-default">
                             Previous
                         </span>
@@ -521,7 +462,7 @@
                         </button>
                     @endif
 
-                    @if ($patients->hasMorePages())
+                    @if ($visits->hasMorePages())
                         <button
                             wire:click="nextPage"
                             class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700"
@@ -538,7 +479,7 @@
                 {{-- Desktop Pagination Controls --}}
                 <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
                     <div>
-                        {{ $patients->links() }}
+                        {{ $visits->links() }}
                     </div>
                 </div>
             </div>
