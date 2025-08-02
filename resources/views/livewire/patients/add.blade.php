@@ -16,7 +16,9 @@
             >
                 <div class="flex items-center">
                     <svg class="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                        <path fill-rule="evenodd"
+                              d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                              clip-rule="evenodd"/>
                     </svg>
                     <p class="text-green-800 font-medium">Patient information saved successfully!</p>
                 </div>
@@ -29,7 +31,9 @@
             <div class="mb-6 rounded-lg bg-red-50 border border-red-200 p-4">
                 <div class="flex items-center">
                     <svg class="w-5 h-5 text-red-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                        <path fill-rule="evenodd"
+                              d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                              clip-rule="evenodd"/>
                     </svg>
                     <p class="text-red-800 font-medium">{{ $message }}</p>
                 </div>
@@ -39,20 +43,26 @@
             <div class="space-y-6">
                 <!-- Name and Age Row -->
                 <div class="">
-                    <label for="name" class="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-300">
-                        Full Name <span class="text-red-500">*</span>
-                    </label>
-                    <input
-                        wire:model.blur="name"
-                        type="text"
-                        id="name"
-                        placeholder="Enter patient's full name"
-                        class="block w-full px-3 py-2 rounded-lg border border-gray-300 shadow-sm placeholder-gray-400 focus:border-gray-500 focus:ring-1 focus:ring-gray-500 transition-all duration-200 @error('name') border-red-300 focus:border-red-500 focus:ring-red-500 @enderror"
-                    />
+
+
+                    <flux:field>
+                        <flux:label>Full Name <span class="text-red-500">*</span></flux:label>
+                        <flux:description>This will be publicly displayed.</flux:description>
+                        <flux:input
+                            wire:keyup="capitalizeName"
+                            wire:model.blur="name"
+                            placeholder="Enter patient's full name"
+                            id="name"
+                        />
+                        <flux:error name="fullname"/>
+                    </flux:field>
+
                     @error('name')
                     <p class="mt-1 text-sm text-red-600 flex items-center">
                         <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                            <path fill-rule="evenodd"
+                                  d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                                  clip-rule="evenodd"/>
                         </svg>
                         {{ $message }}
                     </p>
@@ -65,6 +75,7 @@
                     </label>
                     <input
                         wire:model.blur="age"
+                        icon:trailing="file-digit"
                         type="number"
                         id="age"
                         min="0"
@@ -75,31 +86,34 @@
                     @error('age')
                     <p class="mt-1 text-sm text-red-600 flex items-center">
                         <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                            <path fill-rule="evenodd"
+                                  d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                                  clip-rule="evenodd"/>
                         </svg>
                         {{ $message }}
                     </p>
                     @enderror
                 </div>
 
-                <!-- Gende Row -->
+                <!-- Gender Row -->
                 <div>
                     <label for="gender" class="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-300">
                         Gender <span class="text-red-500">*</span>
                     </label>
-                    <select
-                        wire:model="gender"
-                        id="gender"
-                        class="block w-full px-3 py-2 rounded-lg border border-gray-300 shadow-sm focus:border-gray-500 focus:ring-1 focus:ring-gray-500 transition-all duration-200 @error('gender') border-red-300 focus:border-red-500 focus:ring-red-500 @enderror"
-                    >
-                        <option value="female">Female</option>
-                        <option value="male">Male</option>
-                        <option value="other">Other</option>
-                    </select>
+
+                    <flux:select wire:model="gender" id="gender" placeholder="Choose Gender...">
+                        <flux:select.option>Male</flux:select.option>
+                        <flux:select.option>Female</flux:select.option>
+                        <flux:select.option>Other</flux:select.option>
+                    </flux:select>
+
+
                     @error('gender')
                     <p class="mt-1 text-sm text-red-600 flex items-center">
                         <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                            <path fill-rule="evenodd"
+                                  d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                                  clip-rule="evenodd"/>
                         </svg>
                         {{ $message }}
                     </p>
@@ -113,12 +127,15 @@
                         Phone Number <span class="text-red-500">*</span>
                     </label>
 
-                    <flux:input icon:trailing="credit-card" mask="(999) 999-9999" wire:model.blur="phone_number"  placeholder="0711xxxxxx"/>
+                    <flux:input icon:trailing="phone-call" mask="(9999) 999-999" wire:model.blur="phone_number"
+                                placeholder="0711xxxxxx"/>
 
                     @error('phone_number')
                     <p class="mt-1 text-sm text-red-600 flex items-center">
                         <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                            <path fill-rule="evenodd"
+                                  d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                                  clip-rule="evenodd"/>
                         </svg>
                         {{ $message }}
                     </p>
@@ -131,12 +148,17 @@
                         Location/Address <span class="text-red-500">*</span>
                     </label>
 
-                    <flux:input  wire:model.blur="location"  placeholder="Enter patient's address or location"/>
+                    <flux:input
+                        wire:keyup="capitalizeName"
+                        icon:trailing="map-pin" wire:model.blur="location"
+                                placeholder="Enter patient's address or location"/>
 
                     @error('location')
                     <p class="mt-1 text-sm text-red-600 flex items-center">
                         <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                            <path fill-rule="evenodd"
+                                  d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                                  clip-rule="evenodd"/>
                         </svg>
                         {{ $message }}
                     </p>
@@ -145,20 +167,23 @@
 
                 <!-- Additional Information -->
                 <div>
-                    <label for="additional_information" class="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-300">
+                    <label for="additional_information"
+                           class="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-300">
                         Additional Information
                     </label>
-                    <textarea
+
+                    <flux:textarea
+                        rows="auto"
                         wire:model.blur="additional_information"
                         id="additional_information"
-                        rows="3"
                         placeholder="Any additional notes, medical history, allergies, or special instructions..."
-                        class="block w-full px-3 py-2 rounded-lg border border-gray-300 shadow-sm placeholder-gray-400 focus:border-gray-500 focus:ring-1 focus:ring-gray-500 transition-all duration-200 resize-none @error('additional_information') border-red-300 focus:border-red-500 focus:ring-red-500 @enderror"
-                    ></textarea>
+                    />
                     @error('additional_information')
                     <p class="mt-1 text-sm text-red-600 flex items-center">
                         <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                            <path fill-rule="evenodd"
+                                  d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                                  clip-rule="evenodd"/>
                         </svg>
                         {{ $message }}
                     </p>
@@ -170,7 +195,8 @@
             <div class="flex items-center justify-between pt-6 mt-6 border-t border-gray-200">
 
                 <div class="flex space-x-3">
-                    <flux:button variant="primary" color="rose" x-on:click="$flux.modal('add-patient').close()">Cancel</flux:button>
+                    <flux:button variant="primary" color="rose" x-on:click="$flux.modal('add-patient').close()">Cancel
+                    </flux:button>
 
                     <flux:button type="submit" variant="primary" color="blue" icon="user-plus">Save</flux:button>
                 </div>
@@ -183,8 +209,17 @@
     document.addEventListener('livewire:init', () => {
         Livewire.on('hide-success-message', () => {
             setTimeout(() => {
-            @this.hideSuccessMessage();
+            @this.hideSuccessMessage()
+                ;
             }, 3000);
         });
+    });
+
+
+    document.getElementById('name').addEventListener('input', function (event) {
+        const input = event.target;
+        const words = input.value.split(' ');
+        const capitalizedWords = words.map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase());
+        input.value = capitalizedWords.join(' ');
     });
 </script>

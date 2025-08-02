@@ -15,7 +15,7 @@ class Add extends Component
     #[Validate('required|integer|min:0|max:120')]
     public string $age = '';
 
-    #[Validate('required|in:male,female,other')]
+    #[Validate('required|in:Male,Female,Other')]
     public string $gender = 'female';
 
     #[Validate('required|string|max:20|unique:patients,phone_number')]
@@ -25,7 +25,7 @@ class Add extends Component
     public string $location = '';
 
     #[Validate('nullable|string|max:1000')]
-    public string $additional_information = 'More information about patient';
+    public string $additional_information = '';
 
     public bool $isSubmitting = false;
     public bool $showSuccessMessage = false;
@@ -51,6 +51,15 @@ class Add extends Component
             $patient_number = $patient->number += 1;
         }
         return $patient_number;
+    }
+
+
+    // Capitalize the name when the user types
+    public function capitalizeName()
+    {
+        // Capitalize the first letter of each word in the name
+        $this->name = ucwords(strtolower($this->name));
+        $this->location = ucwords(strtolower($this->location));
     }
 
     public function save()
