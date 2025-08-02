@@ -303,7 +303,7 @@
 
                         {{-- History of Presenting Illness --}}
                         <flux:field>
-                            <flux:label>History of Presenting Illness (optional)</flux:label>
+                            <flux:label>History of Presenting Illness </flux:label>
                             <flux:textarea
                                 rows="auto"
                                 placeholder="History details"
@@ -316,7 +316,7 @@
 
                         {{-- Allergies --}}
                         <flux:field>
-                            <flux:label>Allergies (optional)</flux:label>
+                            <flux:label>Allergies </flux:label>
                             <flux:textarea
                                 rows="auto"
                                 placeholder="List allergies"
@@ -329,7 +329,7 @@
 
                         {{-- Physical Examination --}}
                         <flux:field>
-                            <flux:label>Physical Examination (optional)</flux:label>
+                            <flux:label>Physical Examination </flux:label>
                             <flux:textarea
                                 rows="auto"
                                 placeholder="Physical exam notes"
@@ -342,7 +342,7 @@
 
                         {{-- Lab Test And Results --}}
                         <flux:field>
-                            <flux:label>Lab Test And Results (optional)</flux:label>
+                            <flux:label>Lab Test And Results </flux:label>
                             <flux:textarea
                                 rows="auto"
                                 placeholder="Lab test details"
@@ -367,7 +367,7 @@
                         {{-- Left Side --}}
                         <div class="w-1/2">
                             <flux:field>
-                                <flux:label>Imaging (optional)</flux:label>
+                                <flux:label>Imaging </flux:label>
                                 <flux:textarea
                                     rows="auto"
                                     placeholder="Imaging results"
@@ -382,7 +382,7 @@
                         {{-- Right Side --}}
                         <div class="w-1/2">
                             <flux:field>
-                                <flux:label>Prescriptions (optional)</flux:label>
+                                <flux:label>Prescriptions </flux:label>
                                 <flux:textarea
                                     rows="auto"
                                     placeholder="Prescribed medications"
