@@ -29,9 +29,7 @@ class Add extends Component
     /**
      * Patient Information Properties
      */
-    #[Validate('required|exists:patients,id')]
     public $patient_id = '';
-
     public Patient|null $patient = null;
     public $selected_patient = null;
 
@@ -60,7 +58,7 @@ class Add extends Component
     public $diagnosis = '';
 
     #[Validate('required|in:chronic,infection,short_term')]
-    public $type_of_diagnosis = '';
+    public $type_of_diagnosis = 'infection'; // Set default value
 
     #[Validate('nullable|string|max:2000')]
     public $prescriptions = '';
@@ -97,6 +95,44 @@ class Add extends Component
     public $showDropdown = false;
 
     /**
+     * VALIDATION RULES METHOD
+     */
+    protected function rules()
+    {
+        return [
+            'selectedPatientId' => 'required|exists:patients,id',
+            'complaints' => 'required|string|max:1000',
+            'history_of_presenting_illness' => 'nullable|string|max:2000',
+            'allergies' => 'nullable|string|max:500',
+            'physical_examination' => 'nullable|string|max:2000',
+            'lab_test' => 'nullable|string|max:1000',
+            'imaging' => 'nullable|string|max:1000',
+            'diagnosis' => 'required|string|max:1000',
+            'type_of_diagnosis' => 'required|in:chronic,infection,short_term',
+            'prescriptions' => 'nullable|string|max:2000',
+            'amount_charged' => 'required|numeric|min:0',
+            'amount_paid' => 'required|numeric|min:0',
+            'mode_of_payment' => 'required|in:cash,mpesa,bank_transfer,insurance',
+        ];
+    }
+
+    /**
+     * VALIDATION MESSAGES
+     */
+    protected function messages()
+    {
+        return [
+            'selectedPatientId.required' => 'Please select a patient.',
+            'selectedPatientId.exists' => 'The selected patient is invalid.',
+            'complaints.required' => 'Please enter the patient complaints.',
+            'diagnosis.required' => 'Please enter the diagnosis.',
+            'type_of_diagnosis.required' => 'Please select the type of diagnosis.',
+            'amount_charged.required' => 'Please enter the amount charged.',
+            'amount_paid.required' => 'Please enter the amount paid.',
+        ];
+    }
+
+    /**
      * PATIENT SEARCH AND SELECTION METHODS
      */
 
@@ -122,6 +158,8 @@ class Add extends Component
             $this->selectedPatientId = null;
             $this->selectedPatientName = '';
             $this->selectedPatient = null;
+            $this->previous_balance = 0;
+            $this->calculateBalance();
         }
     }
 
@@ -135,10 +173,14 @@ class Add extends Component
     {
         $this->selectedPatientId = $patientId;
         $this->selectedPatientName = $patientName;
-        $this->selectedPatient = Patient::find($patientId); // Load full patient data
+        $this->selectedPatient = Patient::find($patientId);
         $this->search = $patientName;
         $this->showDropdown = false;
         $this->results = [];
+
+        // Update previous balance when patient is selected
+//        $this->previous_balance = $this->getPreviousBalance($patientId);
+        $this->calculateBalance();
 
         // Emit event for parent components
         $this->dispatch('patientSelected', [
@@ -159,6 +201,8 @@ class Add extends Component
         $this->search = '';
         $this->showDropdown = false;
         $this->results = [];
+        $this->previous_balance = 0;
+        $this->calculateBalance();
 
         $this->dispatch('patientCleared');
     }
@@ -182,7 +226,12 @@ class Add extends Component
      */
     public function mount($patientId = null)
     {
-        $this->patient_id = $patientId;
+        if ($patientId) {
+            $patient = Patient::find($patientId);
+            if ($patient) {
+                $this->selectPatient($patient->id, $patient->name);
+            }
+        }
     }
 
     /**
@@ -193,7 +242,7 @@ class Add extends Component
     public function setModal(Patient $patient)
     {
         $this->patient = $patient;
-        $this->patient_id = $patient->id;
+        $this->selectPatient($patient->id, $patient->name);
     }
 
     /**
@@ -342,14 +391,22 @@ class Add extends Component
      */
     public function saveVisit()
     {
+        // Validate the form data
         $this->validate();
 
-        $patient_id = $this->selectedPatientId;
+        // Check if patient is selected
+        if (!$this->selectedPatientId) {
+            $this->addError('selectedPatientId', 'Please select a patient.');
+            return;
+        }
+
+
+
 
         try {
             // Create the visit
-            $visit = Visit::query()->create([
-                'patient_id' => $patient_id,
+            $visit = Visit::create([
+                'patient_id' => $this->selectedPatientId,
                 'complaints' => $this->complaints,
                 'history_of_presenting_illness' => $this->history_of_presenting_illness,
                 'allergies' => $this->allergies,
@@ -361,8 +418,10 @@ class Add extends Component
                 'prescriptions' => $this->prescriptions,
             ]);
 
+            dd($visit);
+
             // Create the payment
-            $payment = Payment::query()->create([
+            $payment = Payment::create([
                 'visit_id' => $visit->id,
                 'amount_charged' => $this->amount_charged,
                 'amount_paid' => $this->amount_paid,
@@ -390,26 +449,43 @@ class Add extends Component
             }
 
             // Reset form
-            $this->reset([
-                'complaints', 'history_of_presenting_illness', 'allergies',
-                'physical_examination', 'lab_test', 'imaging', 'diagnosis',
-                'type_of_diagnosis', 'prescriptions', 'amount_charged',
-                'amount_paid', 'mode_of_payment'
-            ]);
-
-            $this->previous_balance = 0;
-            $this->calculated_balance = 0;
-            $this->selected_patient = null;
+            $this->resetForm();
 
             session()->flash('success', 'Visit created successfully!');
 
-            // Redirect to visits index
+            // Close modal and redirect
+            $this->dispatch('close-modal', 'add-visit');
             return redirect()->route('visits.index');
 
         } catch (\Exception $e) {
             session()->flash('error', 'An error occurred while creating the visit. Please try again.');
-            Log::error('Visit creation error: ' . $e->getMessage());
+            Log::error('Visit creation error: ' . $e->getMessage(), [
+                'patient_id' => $this->selectedPatientId,
+                'exception' => $e
+            ]);
         }
+    }
+
+    /**
+     * Reset all form fields
+     */
+    private function resetForm()
+    {
+        $this->reset([
+            'complaints', 'history_of_presenting_illness', 'allergies',
+            'physical_examination', 'lab_test', 'imaging', 'diagnosis',
+            'prescriptions', 'amount_charged', 'amount_paid'
+        ]);
+
+        // Reset patient selection
+        $this->clearSelection();
+
+        // Reset other properties
+        $this->previous_balance = 0;
+        $this->calculated_balance = 0;
+        $this->selected_patient = null;
+        $this->type_of_diagnosis = 'infection';
+        $this->mode_of_payment = 'cash';
     }
 
     /**

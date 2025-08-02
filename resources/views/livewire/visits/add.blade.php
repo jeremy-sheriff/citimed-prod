@@ -97,7 +97,7 @@
             --}}
             <div class="relative" x-data="{ open: @entangle('showDropdown') }" @click.outside="$wire.hideDropdown()">
                 <flux:field>
-                    <flux:label>Patient</flux:label>
+                    <flux:label>Patient *</flux:label>
                     <flux:description>Search and select a patient by name or number.</flux:description>
 
                     <div class="relative">
@@ -179,19 +179,14 @@
                         <div class="bg-gradient-to-r from-blue-500 to-blue-600 px-6 py-4">
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center">
-                                    <flux:icon.user-round class="size-24 text-gray-50 dark:text-amber-300" />
                                     <div>
                                         <h3 class="text-xl font-semibold text-white">{{ $selectedPatient->name }}</h3>
                                         <p class="text-blue-100">Patient ID: #{{ $selectedPatient->number }}</p>
                                     </div>
                                 </div>
-                                <button
-                                    type="button"
-                                    wire:click="clearSelection"
-                                    class="bg-white bg-opacity-20 hover:bg-opacity-30 text-white rounded-lg px-3 py-1 text-sm font-medium transition-colors duration-200"
-                                >
-                                    Change Patient
-                                </button>
+
+
+                                <flux:button wire:click="clearSelection" variant="primary" color="red">Cancel</flux:button>
                             </div>
                         </div>
 
@@ -317,7 +312,7 @@
                 {{-- Complaints (full width) --}}
                 <div class="md:col-span-3">
                     <flux:field>
-                        <flux:label>Complaints</flux:label>
+                        <flux:label>Complaints *</flux:label>
                         <flux:textarea
                             placeholder="Describe complaints"
                             name="complaints"
@@ -378,7 +373,7 @@
 
                 {{-- Diagnosis --}}
                 <flux:field>
-                    <flux:label>Diagnosis</flux:label>
+                    <flux:label>Diagnosis *</flux:label>
                     <flux:textarea
                         placeholder="Diagnosis notes"
                         name="diagnosis"
@@ -389,14 +384,16 @@
                 </flux:field>
 
                 {{-- Type of Diagnosis (Radio Button Group) --}}
-                <flux:radio.group wire:model="type_of_diagnosis" label="Select type of diagnosis">
+                <flux:radio.group wire:model="type_of_diagnosis" label="Select type of diagnosis *">
                     <flux:radio value="infection" label="Infection" checked />
                     <flux:radio value="short_term" label="Short term" />
                     <flux:radio value="chronic" label="Chronic" />
                 </flux:radio.group>
+            </div>
 
-                {{-- Imaging (full width) --}}
-                <div class="md:col-span-3">
+            <div class="flex flex-col md:flex-row gap-6">
+                {{-- Left Side --}}
+                <div class="w-1/2">
                     <flux:field>
                         <flux:label>Imaging</flux:label>
                         <flux:textarea
@@ -409,8 +406,8 @@
                     </flux:field>
                 </div>
 
-                {{-- Prescriptions (full width) --}}
-                <div class="md:col-span-3">
+                {{-- Right Side --}}
+                <div class="w-1/2">
                     <flux:field>
                         <flux:label>Prescriptions</flux:label>
                         <flux:textarea
