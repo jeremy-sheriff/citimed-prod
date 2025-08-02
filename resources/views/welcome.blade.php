@@ -165,8 +165,8 @@
                 </ul>
 
                 <!-- CTA Button -->
-                <a href="#contact" class="gradient-primary text-white px-6 py-3 rounded-xl font-semibold hover:scale-105 hover:shadow-xl hover:shadow-primary/30 transition-all duration-300 transform">
-                    Book Appointment
+                <a href="{{ route('login') }}" class="gradient-primary text-white px-6 py-3 rounded-xl font-semibold hover:scale-105 hover:shadow-xl hover:shadow-primary/30 transition-all duration-300 transform">
+                    Login
                 </a>
             </nav>
         </div>

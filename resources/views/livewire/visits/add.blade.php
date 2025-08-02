@@ -256,24 +256,42 @@
                 SECTION: Visit Form Fields
                 This section contains all the medical information fields for the visit
             --}}
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {{-- Complaints (full width) --}}
-                <div class="md:col-span-3">
+            <div class="flex flex-col md:flex-row gap-6">
+
+                <div class="w-1/2">
+                    {{-- Complaints (full width) --}}
+                    <div class="md:col-span-3">
+                        <flux:field>
+                            <flux:label>Complaints <span class="required-asterisk">*</span></flux:label>
+                            <flux:textarea
+                                placeholder="Describe complaints"
+                                name="complaints"
+                                wire:model.defer="complaints"
+                            />
+                            <flux:description>Patient's complaints during the visit.</flux:description>
+                            <flux:error name="complaints" />
+                        </flux:field>
+                    </div>
+                </div>
+                <div class="w-1/2">
+                    {{-- Diagnosis --}}
                     <flux:field>
-                        <flux:label>Complaints <span class="required-asterisk">*</span></flux:label>
+                        <flux:label>Diagnosis <span class="required-asterisk">*</span></flux:label>
                         <flux:textarea
-                            placeholder="Describe complaints"
-                            name="complaints"
-                            wire:model.defer="complaints"
+                            placeholder="Diagnosis notes"
+                            name="diagnosis"
+                            wire:model.defer="diagnosis"
                         />
-                        <flux:description>Patient's complaints during the visit.</flux:description>
-                        <flux:error name="complaints" />
+                        <flux:description>Doctor's diagnosis.</flux:description>
+                        <flux:error name="diagnosis" />
                     </flux:field>
                 </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 
                 {{-- History of Presenting Illness --}}
                 <flux:field>
-                    <flux:label>History of Presenting Illness</flux:label>
+                    <flux:label>History of Presenting Illness (optional)</flux:label>
                     <flux:textarea
                         placeholder="History details"
                         name="history_of_presenting_illness"
@@ -285,7 +303,7 @@
 
                 {{-- Allergies --}}
                 <flux:field>
-                    <flux:label>Allergies</flux:label>
+                    <flux:label>Allergies (optional)</flux:label>
                     <flux:textarea
                         placeholder="List allergies"
                         name="allergies"
@@ -297,7 +315,7 @@
 
                 {{-- Physical Examination --}}
                 <flux:field>
-                    <flux:label>Physical Examination</flux:label>
+                    <flux:label>Physical Examination (optional)</flux:label>
                     <flux:textarea
                         placeholder="Physical exam notes"
                         name="physical_examination"
@@ -309,7 +327,7 @@
 
                 {{-- Lab Test And Results --}}
                 <flux:field>
-                    <flux:label>Lab Test And Results</flux:label>
+                    <flux:label>Lab Test And Results (optional)</flux:label>
                     <flux:textarea
                         placeholder="Lab test details"
                         name="lab_test"
@@ -319,20 +337,10 @@
                     <flux:error name="lab_test" />
                 </flux:field>
 
-                {{-- Diagnosis --}}
-                <flux:field>
-                    <flux:label>Diagnosis <span class="required-asterisk">*</span></flux:label>
-                    <flux:textarea
-                        placeholder="Diagnosis notes"
-                        name="diagnosis"
-                        wire:model.defer="diagnosis"
-                    />
-                    <flux:description>Doctor's diagnosis.</flux:description>
-                    <flux:error name="diagnosis" />
-                </flux:field>
+
 
                 {{-- Type of Diagnosis (Radio Button Group) --}}
-                <flux:radio.group wire:model="type_of_diagnosis" label="Select type of diagnosis <span class='required-asterisk'>*</span>">
+                <flux:radio.group wire:model="type_of_diagnosis" label="Select type of diagnosis"> <span class='required-asterisk'>*</span>
                     <flux:radio value="infection" label="Infection" checked />
                     <flux:radio value="short_term" label="Short term" />
                     <flux:radio value="chronic" label="Chronic" />
@@ -343,7 +351,7 @@
                 {{-- Left Side --}}
                 <div class="w-1/2">
                     <flux:field>
-                        <flux:label>Imaging</flux:label>
+                        <flux:label>Imaging (optional)</flux:label>
                         <flux:textarea
                             placeholder="Imaging results"
                             name="imaging"
@@ -357,7 +365,7 @@
                 {{-- Right Side --}}
                 <div class="w-1/2">
                     <flux:field>
-                        <flux:label>Prescriptions</flux:label>
+                        <flux:label>Prescriptions (optional)</flux:label>
                         <flux:textarea
                             placeholder="Prescribed medications"
                             name="prescriptions"
