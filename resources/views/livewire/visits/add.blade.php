@@ -256,177 +256,201 @@
                 SECTION: Visit Form Fields
                 This section contains all the medical information fields for the visit
             --}}
-            <div class="flex flex-col md:flex-row gap-6">
+            <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden mb-6">
+                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 px-6 py-4 border-b border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-800 flex items-center">
+                        <svg class="w-5 h-5 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                        Medical Information
+                    </h3>
+                </div>
 
-                <div class="w-1/2">
-                    {{-- Complaints (full width) --}}
-                    <div class="md:col-span-3">
+                <div class="p-6 space-y-6">
+                    <div class="flex flex-col md:flex-row gap-6">
+                        <div class="w-1/2">
+                            {{-- Complaints (full width) --}}
+                            <div class="md:col-span-3">
+                                <flux:field>
+                                    <flux:label>Complaints <span class="required-asterisk">*</span></flux:label>
+                                    <flux:textarea
+                                        rows="auto"
+                                        placeholder="Describe complaints"
+                                        name="complaints"
+                                        wire:model.defer="complaints"
+                                    />
+                                    <flux:description>Patient's complaints during the visit.</flux:description>
+                                    <flux:error name="complaints" />
+                                </flux:field>
+                            </div>
+                        </div>
+                        <div class="w-1/2">
+                            {{-- Diagnosis --}}
+                            <flux:field>
+                                <flux:label>Diagnosis <span class="required-asterisk">*</span></flux:label>
+                                <flux:textarea
+                                    rows="auto"
+                                    placeholder="Diagnosis notes"
+                                    name="diagnosis"
+                                    wire:model.defer="diagnosis"
+                                />
+                                <flux:description>Doctor's diagnosis.</flux:description>
+                                <flux:error name="diagnosis" />
+                            </flux:field>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+                        {{-- History of Presenting Illness --}}
                         <flux:field>
-                            <flux:label>Complaints <span class="required-asterisk">*</span></flux:label>
+                            <flux:label>History of Presenting Illness (optional)</flux:label>
                             <flux:textarea
                                 rows="auto"
-                                placeholder="Describe complaints"
-                                name="complaints"
-                                wire:model.defer="complaints"
+                                placeholder="History details"
+                                name="history_of_presenting_illness"
+                                wire:model.defer="history_of_presenting_illness"
                             />
-                            <flux:description>Patient's complaints during the visit.</flux:description>
-                            <flux:error name="complaints" />
+                            <flux:description>Relevant history for diagnosis.</flux:description>
+                            <flux:error name="history_of_presenting_illness" />
                         </flux:field>
+
+                        {{-- Allergies --}}
+                        <flux:field>
+                            <flux:label>Allergies (optional)</flux:label>
+                            <flux:textarea
+                                rows="auto"
+                                placeholder="List allergies"
+                                name="allergies"
+                                wire:model.defer="allergies"
+                            />
+                            <flux:description>Known allergies of the patient.</flux:description>
+                            <flux:error name="allergies" />
+                        </flux:field>
+
+                        {{-- Physical Examination --}}
+                        <flux:field>
+                            <flux:label>Physical Examination (optional)</flux:label>
+                            <flux:textarea
+                                rows="auto"
+                                placeholder="Physical exam notes"
+                                name="physical_examination"
+                                wire:model.defer="physical_examination"
+                            />
+                            <flux:description>Findings from the physical examination.</flux:description>
+                            <flux:error name="physical_examination" />
+                        </flux:field>
+
+                        {{-- Lab Test And Results --}}
+                        <flux:field>
+                            <flux:label>Lab Test And Results (optional)</flux:label>
+                            <flux:textarea
+                                rows="auto"
+                                placeholder="Lab test details"
+                                name="lab_test"
+                                wire:model.defer="lab_test"
+                            />
+                            <flux:description>Laboratory tests ordered or results.</flux:description>
+                            <flux:error name="lab_test" />
+                        </flux:field>
+
+
+
+                        {{-- Type of Diagnosis (Radio Button Group) --}}
+                        <flux:radio.group wire:model="type_of_diagnosis" label="Select type of diagnosis ">
+                            <flux:radio value="infection" label="Infection" checked />
+                            <flux:radio value="short_term" label="Short term" />
+                            <flux:radio value="chronic" label="Chronic" />
+                        </flux:radio.group>
                     </div>
-                </div>
-                <div class="w-1/2">
-                    {{-- Diagnosis --}}
-                    <flux:field>
-                        <flux:label>Diagnosis <span class="required-asterisk">*</span></flux:label>
-                        <flux:textarea
-                            rows="auto"
-                            placeholder="Diagnosis notes"
-                            name="diagnosis"
-                            wire:model.defer="diagnosis"
-                        />
-                        <flux:description>Doctor's diagnosis.</flux:description>
-                        <flux:error name="diagnosis" />
-                    </flux:field>
-                </div>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-
-                {{-- History of Presenting Illness --}}
-                <flux:field>
-                    <flux:label>History of Presenting Illness (optional)</flux:label>
-                    <flux:textarea
-                        rows="auto"
-                        placeholder="History details"
-                        name="history_of_presenting_illness"
-                        wire:model.defer="history_of_presenting_illness"
-                    />
-                    <flux:description>Relevant history for diagnosis.</flux:description>
-                    <flux:error name="history_of_presenting_illness" />
-                </flux:field>
-
-                {{-- Allergies --}}
-                <flux:field>
-                    <flux:label>Allergies (optional)</flux:label>
-                    <flux:textarea
-                        rows="auto"
-                        placeholder="List allergies"
-                        name="allergies"
-                        wire:model.defer="allergies"
-                    />
-                    <flux:description>Known allergies of the patient.</flux:description>
-                    <flux:error name="allergies" />
-                </flux:field>
-
-                {{-- Physical Examination --}}
-                <flux:field>
-                    <flux:label>Physical Examination (optional)</flux:label>
-                    <flux:textarea
-                        rows="auto"
-                        placeholder="Physical exam notes"
-                        name="physical_examination"
-                        wire:model.defer="physical_examination"
-                    />
-                    <flux:description>Findings from the physical examination.</flux:description>
-                    <flux:error name="physical_examination" />
-                </flux:field>
-
-                {{-- Lab Test And Results --}}
-                <flux:field>
-                    <flux:label>Lab Test And Results (optional)</flux:label>
-                    <flux:textarea
-                        rows="auto"
-                        placeholder="Lab test details"
-                        name="lab_test"
-                        wire:model.defer="lab_test"
-                    />
-                    <flux:description>Laboratory tests ordered or results.</flux:description>
-                    <flux:error name="lab_test" />
-                </flux:field>
-
-
-
-                {{-- Type of Diagnosis (Radio Button Group) --}}
-                <flux:radio.group wire:model="type_of_diagnosis" label="Select type of diagnosis ">
-                    <flux:radio value="infection" label="Infection" checked />
-                    <flux:radio value="short_term" label="Short term" />
-                    <flux:radio value="chronic" label="Chronic" />
-                </flux:radio.group>
-            </div>
-
-            <div class="flex flex-col md:flex-row gap-6">
-                {{-- Left Side --}}
-                <div class="w-1/2">
-                    <flux:field>
-                        <flux:label>Imaging (optional)</flux:label>
-                        <flux:textarea
-                            rows="auto"
-                            placeholder="Imaging results"
-                            name="imaging"
-                            wire:model.defer="imaging"
-                        />
-                        <flux:description>Imaging studies and results.</flux:description>
-                        <flux:error name="imaging" />
-                    </flux:field>
-                </div>
-
-                {{-- Right Side --}}
-                <div class="w-1/2">
-                    <flux:field>
-                        <flux:label>Prescriptions (optional)</flux:label>
-                        <flux:textarea
-                            rows="auto"
-                            placeholder="Prescribed medications"
-                            name="prescriptions"
-                            wire:model.defer="prescriptions"
-                        />
-                        <flux:description>Medications prescribed during visit.</flux:description>
-                        <flux:error name="prescriptions" />
-                    </flux:field>
-                </div>
-            </div>
-
-
-
-            <flux:separator />
-
-            <div class="flex flex-col md:flex-row gap-6">
-                {{-- Mode  of  Payment --}}
-                <div class="w-1/2 mt-5">
-                    <flux:select wire:model="mode_of_payment" placeholder="Choose mode of payment">
-                        <flux:select.option>Mpesa</flux:select.option>
-                        <flux:select.option>Cash</flux:select.option>
-                    </flux:select>
-                </div>
-
-
-                {{-- Right Side --}}
-                <div class="w-1/2">
 
                     <div class="flex flex-col md:flex-row gap-6">
-
+                        {{-- Left Side --}}
                         <div class="w-1/2">
                             <flux:field>
-                                <flux:label>Previous Visit Balance</flux:label>
-                                <flux:input type="number" wire:model="previous_balance" disabled="disabled"/>
-                                <flux:error name="previous_balance" />
+                                <flux:label>Imaging (optional)</flux:label>
+                                <flux:textarea
+                                    rows="auto"
+                                    placeholder="Imaging results"
+                                    name="imaging"
+                                    wire:model.defer="imaging"
+                                />
+                                <flux:description>Imaging studies and results.</flux:description>
+                                <flux:error name="imaging" />
                             </flux:field>
                         </div>
+
+                        {{-- Right Side --}}
                         <div class="w-1/2">
                             <flux:field>
-                                <flux:label>Amount Charged</flux:label>
-                                <flux:input type="number"
-                                            wire:model.live="amount_charged"
-                                            placeholder="Enter amount charged" />
-                                <flux:error name="amount_charged"  />
+                                <flux:label>Prescriptions (optional)</flux:label>
+                                <flux:textarea
+                                    rows="auto"
+                                    placeholder="Prescribed medications"
+                                    name="prescriptions"
+                                    wire:model.defer="prescriptions"
+                                />
+                                <flux:description>Medications prescribed during visit.</flux:description>
+                                <flux:error name="prescriptions" />
                             </flux:field>
                         </div>
                     </div>
+                </div>
+            </div>
 
-                    <div class="flex flex-col md:flex-row gap-6 mt-5">
 
+
+            <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden mb-6">
+                <div class="bg-gradient-to-r from-green-50 to-teal-50 px-6 py-4 border-b border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-800 flex items-center">
+                        <svg class="w-5 h-5 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        Payment Information
+                    </h3>
+                </div>
+
+                <div class="p-6 space-y-6">
+                    <div class="flex flex-col md:flex-row gap-6">
+                        {{-- Mode of Payment --}}
                         <div class="w-1/2">
                             <flux:field>
-                                <flux:label>Amount Paid</flux:label>
+                                <flux:label>Mode of Payment <span class="required-asterisk">*</span></flux:label>
+                                <flux:select wire:model="mode_of_payment" placeholder="Choose mode of payment">
+                                    <flux:select.option>Mpesa</flux:select.option>
+                                    <flux:select.option>Cash</flux:select.option>
+                                </flux:select>
+                                <flux:description>Select the payment method used.</flux:description>
+                                <flux:error name="mode_of_payment" />
+                            </flux:field>
+                        </div>
+
+                        {{-- Right Side --}}
+                        <div class="w-1/2">
+                            <div class="flex flex-col md:flex-row gap-6">
+                                <div class="w-1/2">
+                                    <flux:field>
+                                        <flux:label>Previous Visit Balance</flux:label>
+                                        <flux:input type="number" wire:model="previous_balance" disabled="disabled"/>
+                                        <flux:error name="previous_balance" />
+                                    </flux:field>
+                                </div>
+                                <div class="w-1/2">
+                                    <flux:field>
+                                        <flux:label>Amount Charged <span class="required-asterisk">*</span></flux:label>
+                                        <flux:input type="number"
+                                                    wire:model.live="amount_charged"
+                                                    placeholder="Enter amount charged" />
+                                        <flux:error name="amount_charged"  />
+                                    </flux:field>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col md:flex-row gap-6">
+                        <div class="w-1/2">
+                            <flux:field>
+                                <flux:label>Amount Paid <span class="required-asterisk">*</span></flux:label>
                                 <flux:input type="number"
                                             wire:model.live="amount_paid"
                                             placeholder="Enter amount paid"/>
@@ -440,6 +464,7 @@
                                             wire:model="calculated_balance"
                                             disabled="disabled"
                                             class="bg-gray-100" />
+                                <flux:description>Automatically calculated balance for next visit.</flux:description>
                                 <flux:error name="calculated_balance" />
                             </flux:field>
                         </div>
