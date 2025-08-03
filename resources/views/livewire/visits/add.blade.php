@@ -123,12 +123,12 @@
                 @if($selectedPatient)
                     <div class="mt-4 bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
                         {{-- Card Header with Patient Name and ID --}}
-                        <div class="bg-gradient-to-r from-blue-500 to-blue-600 px-6 py-4">
+                        <div class="bg-slate-100 dark:bg-slate-700 px-6 py-4">
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center">
                                     <div>
-                                        <h3 class="text-xl font-semibold text-white">{{ $selectedPatient->name }}</h3>
-                                        <p class="text-blue-100">Patient ID: #{{ $selectedPatient->number }}</p>
+                                        <h3 class="text-xl font-semibold text-slate-800 dark:text-slate-100">{{ $selectedPatient->name }}</h3>
+                                        <p class="text-slate-600 dark:text-slate-300">Patient ID: #{{ $selectedPatient->number }}</p>
                                     </div>
                                 </div>
 
@@ -256,9 +256,9 @@
                 This section contains all the medical information fields for the visit
             --}}
             <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden mb-6">
-                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 px-6 py-4 border-b border-gray-200">
-                    <h3 class="text-lg font-semibold text-gray-800 flex items-center">
-                        <svg class="w-5 h-5 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="bg-blue-50 dark:bg-blue-900 px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+                    <h3 class="text-lg font-semibold text-blue-800 dark:text-blue-100 flex items-center">
+                        <svg class="w-5 h-5 mr-2 text-blue-600 dark:text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                         </svg>
                         Medical Information
@@ -391,9 +391,9 @@
 
 
             <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden mb-6">
-                <div class="bg-gradient-to-r from-green-50 to-teal-50 px-6 py-4 border-b border-gray-200">
-                    <h3 class="text-lg font-semibold text-gray-800 flex items-center">
-                        <svg class="w-5 h-5 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="bg-green-50 dark:bg-green-900 px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+                    <h3 class="text-lg font-semibold text-green-800 dark:text-green-100 flex items-center">
+                        <svg class="w-5 h-5 mr-2 text-green-600 dark:text-green-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
                         Payment Information

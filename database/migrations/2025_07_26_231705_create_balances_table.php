@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('balances', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('payment_id');
+            $table->foreign('payment_id')->references('id')->on('payments');
+            $table->string('amount');
+            $table->enum('status',['cleared','not_cleared','carried_foward']);
             $table->timestamps();
         });
     }
