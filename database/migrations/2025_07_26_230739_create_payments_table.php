@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('visit_id');
             $table->foreign('visit_id')->references('id')->on('visits');
-            $table->integer('amount');
+            $table->integer('amount_charged');
+            $table->integer('amount_paid');
             $table->enum('mode_of_payment',['cash','mpesa']);
             $table->integer('balance')->default(0);
             $table->timestamps();
