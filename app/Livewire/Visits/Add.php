@@ -356,6 +356,8 @@ class Add extends Component
             ]);
 
             $this->dispatch('visit-created');
+            // Reset form
+            $this->resetForm();
 
             // Create the payment
             $payment = Payment::create([
