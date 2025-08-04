@@ -69,8 +69,8 @@ class Add extends Component
     #[Validate('required|numeric|min:0')]
     public $amount_paid = null;
 
-    #[Validate('required|in:cash,mpesa,bank_transfer,insurance')]
-    public $mode_of_payment = 'cash';
+    #[Validate('required|in:Cash,Mpesa,bank_transfer,insurance')]
+    public $mode_of_payment = 'Cash';
 
     public $previous_balance = 0;
     public $previous_balance_id = null;
