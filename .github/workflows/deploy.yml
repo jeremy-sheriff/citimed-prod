@@ -99,28 +99,26 @@ jobs:
       - name: Build frontend assets
         run: npm run build
 
-      - name: Create deployment package
+      - name: Prepare deployment files
         run: |
           # Create .env file from secrets
           echo "${{ secrets.ENV_PRODUCTION }}" > .env
-
-          # Zip project contents (excluding unnecessary files)
-          zip -r app.zip . -x \
-            "vendor/**" \
-            "node_modules/**" \
-            ".git/**" \
-            ".github/**" \
-            "tests/**" \
-            "*.md" \
-            ".env.example" \
-            "phpunit.xml" \
-            "docker-compose.yml"
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: app-build
-          path: app.zip
+          path: |
+            .
+            !vendor/
+            !node_modules/
+            !.git/
+            !.github/
+            !tests/
+            !*.md
+            !.env.example
+            !phpunit.xml
+            !docker-compose.yml
           retention-days: 1
 
   deploy:
@@ -134,6 +132,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: app-build
+          path: ./deploy-files
 
       - name: Upload to FTP server
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
@@ -144,4 +143,11 @@ jobs:
           protocol: ftp
           port: 21
           server-dir: /domains/citimedhospital.co.ke/
-          local-dir: ./
+          local-dir: ./deploy-files/
+          dangerous-clean-slate: false
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+            **/vendor/**
+            **/tests/**
