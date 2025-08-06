@@ -16,10 +16,8 @@ class Add extends Component
     public string $age = '';
 
     #[Validate('required|in:Male,Female,Other')]
-    public string $gender = 'female';
+    public string $gender = 'Female';
 
-    #[Validate('required|in:Mpesa,Cash,Other')]
-    public string $mode_of_payment = '';
 
     #[Validate('required|string|max:20|unique:patients,phone_number')]
     public string $phone_number = '';
@@ -67,6 +65,8 @@ class Add extends Component
 
     public function save()
     {
+
+
         $this->isSubmitting = true;
 
         $this->validate();
@@ -89,7 +89,7 @@ class Add extends Component
 
             // Reset form
             $this->reset(['name', 'age', 'gender', 'phone_number', 'location', 'additional_information']);
-            $this->gender = 'female'; // Reset to default
+            $this->gender = 'Female'; // Reset to default
 
             $this->showSuccessMessage = true;
 
